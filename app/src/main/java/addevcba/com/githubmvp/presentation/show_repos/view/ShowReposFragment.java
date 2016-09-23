@@ -21,6 +21,7 @@ import java.util.TreeMap;
 
 import addevcba.com.githubmvp.R;
 import addevcba.com.githubmvp.data.model.Repo;
+import addevcba.com.githubmvp.presentation.add_repos.AddReposActivity;
 import addevcba.com.githubmvp.presentation.show_repos.ShowReposContract;
 import addevcba.com.githubmvp.presentation.show_repos.model.RepoUI;
 import addevcba.com.githubmvp.presentation.show_repos.model.StickyHeaderUI;
@@ -138,9 +139,8 @@ public class ShowReposFragment extends Fragment implements ShowReposContract.Vie
 
     @Override
     public void showAddReposScreen() {
-        // TODO Go to Add repos screen
-//        Intent intent = new Intent(getContext(), AddReposActivity.class);
-//        startActivityForResult(intent, REQUEST_ADD_REPOS);
+        Intent intent = new Intent(getContext(), AddReposActivity.class);
+        startActivityForResult(intent, REQUEST_ADD_REPOS);
     }
 
     @Override
