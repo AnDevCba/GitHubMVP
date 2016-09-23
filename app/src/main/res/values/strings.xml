@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">GitHub MVP app</string>
+    <string name="app_name">GitHubMVP</string>
+    <!-- TODO Group messages by screen -->
+    <string name="empty_show_repos_message">No repos found :(\nPlease tap on + button to start adding repos.</string>
+    <string name="empty_search_repos_message">No repos found :(\nPlease try with other username.</string>
+    <string name="search_repos_title">Search for repos by username.</string>
+    <string name="enter_username_hint">Enter username.</string>
+    <string name="search_repos_button">Search for repos</string>
+    <string name="add_repos_button">Add Repos</string>
+    <string name="add_repos_title">Search and Add Repos</string>
+    <string name="empty_username_error_message">Username cannot be empty.</string>
+    <string name="error_searching_for_repos_message">Error searching for repos. Please try again!</string>
+    <string name="error_loading_repos_message">Error loading repos. Please try again!</string>
+    <string name="error_repos_already_saved_message">Repos already saved. Please try with other username.</string>
+    <string name="repos_saved_message">Repos saved.</string>
 </resources>

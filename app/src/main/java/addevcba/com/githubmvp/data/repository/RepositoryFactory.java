@@ -1,6 +1,6 @@
 package addevcba.com.githubmvp.data.repository;
 
-import addevcba.com.githubmvp.util.DependencyProvider;
+import addevcba.com.githubmvp.data.DependencyProvider;
 
 /**
  * Creates a concrete {@link Repository} by a given username;
