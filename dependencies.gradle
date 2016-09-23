@@ -1,0 +1,25 @@
+/**
+ * Define versions in a single place.
+ */
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+	// SDK and build tools
+    compileSdkVersion = 23
+    minSdkVersion = 21
+    targetSdkVersion = 23
+    buildToolsVersion = '23.0.3'
+
+    // App dependencies
+    supportLibraryVersion = '24.2.1'
+    retrofitVersion = '2.1.0'
+    stickyHeadersVersion = '0.3.3'
+
+    // Unit Testing dependencies
+    junitVersion = '4.12'
+}
