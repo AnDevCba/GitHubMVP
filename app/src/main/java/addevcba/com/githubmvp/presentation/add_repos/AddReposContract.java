@@ -18,6 +18,8 @@ public interface AddReposContract {
 
         void showRepos(List<ViewType> repos);
 
+        void showSaveReposButton(boolean show);
+
         void showProgressBar(boolean show);
 
         void showError(String error);

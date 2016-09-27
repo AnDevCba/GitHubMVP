@@ -149,8 +149,13 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     @Override
     public void showRepos(List<ViewType> repos) {
         rvShowRepos.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.VISIBLE);
         adapter.addAll(repos);
+    }
+
+    @Override
+    public void showSaveReposButton(boolean show) {
+        int visibility = show ? View.VISIBLE : View.GONE;
+        fab.setVisibility(visibility);
     }
 
     @Override
@@ -164,7 +169,6 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     @Override
     public void showError(String error) {
         rvShowRepos.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.GONE);
         Snackbar.make(getView(), getString(R.string.error_searching_for_repos_message), Snackbar.LENGTH_LONG).show();
     }
 
