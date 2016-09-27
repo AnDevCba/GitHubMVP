@@ -44,7 +44,7 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         switch (viewType) {
             case EMPTY:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_view, parent, false);
-                holder = new EmtpyViewHolder(view);
+                holder = new EmptyViewHolder(view);
                 break;
             case STICKY_HEADER:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sticky_header, parent, false);
@@ -61,7 +61,7 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items.isEmpty()) {
-            ((EmtpyViewHolder) holder).tvEmtpy.setText(emptyResId);
+            ((EmptyViewHolder) holder).tvEmtpy.setText(emptyResId);
         } else {
             ViewType item = items.get(position);
             ((ViewHolder) holder).tvName.setText(item.getName());
@@ -126,11 +126,11 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    class EmtpyViewHolder extends RecyclerView.ViewHolder {
+    class EmptyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvEmtpy;
 
-        EmtpyViewHolder(View itemView) {
+        EmptyViewHolder(View itemView) {
             super(itemView);
             tvEmtpy = (TextView) itemView.findViewById(R.id.tv_empty);
         }
