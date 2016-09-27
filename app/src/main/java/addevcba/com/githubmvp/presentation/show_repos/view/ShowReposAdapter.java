@@ -72,10 +72,8 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemViewType(int position) {
         if (items.isEmpty()) {
             return ViewType.EMPTY;
-        } else if (ViewType.STICKY_HEADER == items.get(position).getType()) {
-            return ViewType.STICKY_HEADER;
         } else {
-            return ViewType.REPO_ITEM;
+            return items.get(position).getType();
         }
     }
 
@@ -114,7 +112,7 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View v) {
             // Use viewHolder#getAdapterPosition() because recyclerView#getAdapterPosition() returns -1 in some cases
             int position = this.getAdapterPosition();
-            if(position == -1) {
+            if (position == -1) {
                 position = 0;
             }
             ViewType item = items.get(position);

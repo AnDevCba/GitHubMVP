@@ -40,24 +40,27 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         if (username.isEmpty()) {
             view.showEmptyUsernameError();
         } else {
+            String formattedUsername = username.toLowerCase().trim();
             view.hideSoftKeyboard();
             view.showProgressBar(true);
-            interactor = new SearchReposByUsernameInteractor(username, DependencyProvider.provideRepositoryFactory(reposCache), this);
+            interactor = new SearchReposByUsernameInteractor(formattedUsername, DependencyProvider.provideRepositoryFactory(reposCache), this);
             interactor.execute();
         }
     }
 
     @Override
     public void onResponse(TreeMap<String, List<Repo>> reposByUsername) {
-        // TODO Check if repos are already cached using reposCache
+        this.reposByUsername = reposByUsername;
+        view.showProgressBar(false);
+        List<ViewType> items = transformResponseToViewTypes(reposByUsername);
+        view.showRepos(items);
+
         if (reposCache.isCached(reposByUsername.firstKey())) {
             view.showProgressBar(false);
             view.showReposAlreadySaved();
+            view.showSaveReposButton(false);
         } else {
-            this.reposByUsername = reposByUsername;
-            view.showProgressBar(false);
-            List<ViewType> items = transformResponseToViewTypes(reposByUsername);
-            view.showRepos(items);
+            view.showSaveReposButton(true);
         }
     }
 
@@ -65,6 +68,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     public void onError(String error) {
         view.showProgressBar(false);
         view.showError(error);
+        view.showSaveReposButton(false);
     }
 
     @Override
@@ -93,8 +97,16 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     @Override
     public void restoreStateAndShowReposByUsername(TreeMap<String, List<Repo>> reposByUsername) {
         if (reposByUsername != null) {
+            this.reposByUsername = reposByUsername;
             List<ViewType> items = transformResponseToViewTypes(reposByUsername);
             view.showRepos(items);
+
+            if (reposCache.isCached(reposByUsername.firstKey())) {
+                view.showReposAlreadySaved();
+                view.showSaveReposButton(false);
+            } else {
+                view.showSaveReposButton(true);
+            }
         }
     }
 
