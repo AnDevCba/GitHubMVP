@@ -96,6 +96,11 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public void clearAll() {
+        items.clear();
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvName;
