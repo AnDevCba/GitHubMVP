@@ -168,6 +168,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     @Override
     public void showError(String error) {
+        adapter.clearAll();
         rvShowRepos.setVisibility(View.VISIBLE);
         Snackbar.make(getView(), getString(R.string.error_searching_for_repos_message), Snackbar.LENGTH_LONG).show();
     }
