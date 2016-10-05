@@ -1,9 +1,8 @@
 package andevcba.com.githubmvp.presentation.add_repos;
 
 import java.util.List;
-import java.util.TreeMap;
 
-import andevcba.com.githubmvp.data.model.Repo;
+import andevcba.com.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import andevcba.com.githubmvp.presentation.show_repos.view.ViewType;
 
 /**
@@ -44,8 +43,8 @@ public interface AddReposContract {
 
         void goToGitHubRepoPage(String url);
 
-        TreeMap<String, List<Repo>> getReposByUsername();
+        ReposByUsernameUI getReposByUsernameUI();
 
-        void restoreStateAndShowReposByUsername(TreeMap<String, List<Repo>> reposByUsername);
+        void restoreStateAndShowReposByUsername(ReposByUsernameUI reposByUsername);
     }
 }

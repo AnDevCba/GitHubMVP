@@ -17,16 +17,13 @@ public class StickyHeaderUI implements ViewType, StickyHeader {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public int getType() {
         return STICKY_HEADER;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

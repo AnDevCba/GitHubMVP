@@ -17,6 +17,7 @@
 package andevcba.com.githubmvp.data.repository;
 
 import andevcba.com.githubmvp.data.model.Repo;
+import andevcba.com.githubmvp.data.model.ReposByUsername;
 
 /**
  * Repository for accessing {@link Repo} data from a data source.
@@ -27,5 +28,7 @@ public interface Repository {
 
     void searchReposByUsername(String username, ReposCallback callback);
 
-    void loadReposByUsername(ReposCallback callback);
+    void saveReposByUsername(ReposByUsername reposByUsername);
+
+    void loadAllRepos(ReposCallback callback);
 }
