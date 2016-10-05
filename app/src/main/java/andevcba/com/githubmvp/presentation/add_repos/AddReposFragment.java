@@ -134,7 +134,6 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         }
     }
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
