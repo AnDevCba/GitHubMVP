@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import andevcba.com.githubmvp.data.net.GitHubApiClient;
 import andevcba.com.githubmvp.data.model.Repo;
-import andevcba.com.githubmvp.data.repository.ReposCache;
+import andevcba.com.githubmvp.data.model.ReposByUsername;
+import andevcba.com.githubmvp.data.net.GitHubApiClient;
 import andevcba.com.githubmvp.data.repository.ReposCallback;
-import andevcba.com.githubmvp.data.repository.Repository;
+import andevcba.com.githubmvp.domain.interactor.LoadReposInteractor;
 import andevcba.com.githubmvp.presentation.show_repos.ShowReposContract;
 import andevcba.com.githubmvp.presentation.show_repos.model.RepoUI;
-import andevcba.com.githubmvp.presentation.show_repos.model.StickyHeaderUI;
+import andevcba.com.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import andevcba.com.githubmvp.presentation.show_repos.view.ShowReposFragment;
 import andevcba.com.githubmvp.presentation.show_repos.view.ViewType;
-import andevcba.com.githubmvp.data.DependencyProvider;
 
 /**
  * Presenter that handles user actions from {@link ShowReposFragment} view,
@@ -27,24 +26,23 @@ import andevcba.com.githubmvp.data.DependencyProvider;
 public class ShowReposPresenter implements ShowReposContract.Presenter, ReposCallback {
 
     private final ShowReposContract.View view;
-    private Repository repository;
-    private TreeMap<String, List<Repo>> reposByUsername;
+    private LoadReposInteractor loadReposInteractor;
+    private ReposByUsernameUI reposByUsernameUI;
 
     public ShowReposPresenter(ShowReposFragment view) {
         this.view = view;
-        ReposCache reposCache = DependencyProvider.provideReposCache();
-        repository = DependencyProvider.provideInMemoryRepository(reposCache);
+        loadReposInteractor = new LoadReposInteractor(this);
     }
 
     @Override
-    public void loadReposByUsername() {
-        repository.loadReposByUsername(this);
+    public void loadAllRepos() {
+        loadReposInteractor.execute();
     }
 
     @Override
-    public void onResponse(TreeMap<String, List<Repo>> reposByUsername) {
-        this.reposByUsername = reposByUsername;
-        List<ViewType> items = transformReposByUsernameToViewTypes(reposByUsername);
+    public void onResponse(ReposByUsername response) {
+        reposByUsernameUI = transformDataToViewModel(response);
+        List<ViewType> items = reposByUsernameUI.getViewTypes();
         view.showReposByUsername(items, true /* go to top */);
     }
 
@@ -69,29 +67,29 @@ public class ShowReposPresenter implements ShowReposContract.Presenter, ReposCal
         view.showGitHubRepoPage(url);
     }
 
-    @Override
-    public TreeMap<String, List<Repo>> getReposByUsername() {
-        return reposByUsername;
+    public ReposByUsernameUI getReposByUsernameUI() {
+        return reposByUsernameUI;
     }
 
     @Override
-    public void restoreStateAndShowReposByUsername(TreeMap<String, List<Repo>> reposByUsername) {
+    public void restoreStateAndShowReposByUsername(ReposByUsernameUI reposByUsername) {
         if (reposByUsername != null) {
-            this.reposByUsername = reposByUsername;
-            List<ViewType> items = transformReposByUsernameToViewTypes(reposByUsername);
+            this.reposByUsernameUI = reposByUsername;
+            List<ViewType> items = reposByUsernameUI.getViewTypes();
             view.showReposByUsername(items, false /*not going to top*/);
         }
     }
 
-    private List<ViewType> transformReposByUsernameToViewTypes(TreeMap<String, List<Repo>> reposByUsername) {
-        List<ViewType> items = new ArrayList<>();
-        for (String username : reposByUsername.keySet()) {
-            items.add(new StickyHeaderUI(username));
-            List<Repo> repos = reposByUsername.get(username);
-            for (Repo repo : repos) {
-                items.add(new RepoUI(repo.getId(), repo.getName(), repo.getUrl(), repo.getCreatedAt(), repo.getStars(), repo.getLanguage()));
+    private ReposByUsernameUI transformDataToViewModel(ReposByUsername data) {
+        TreeMap<String, List<RepoUI>> reposMap = new TreeMap<>();
+        for (TreeMap.Entry<String, List<Repo>> entry : data.getReposByUsername().entrySet()) {
+            String username = entry.getKey();
+            List<RepoUI> repos = new ArrayList<>();
+            for (Repo repo : entry.getValue()) {
+                repos.add(new RepoUI(repo.getName(), repo.getUrl()));
             }
+            reposMap.put(username, repos);
         }
-        return items;
+        return new ReposByUsernameUI(reposMap, data.isCached());
     }
 }

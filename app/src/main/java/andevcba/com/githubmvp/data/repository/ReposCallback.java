@@ -1,9 +1,6 @@
 package andevcba.com.githubmvp.data.repository;
 
-import java.util.List;
-import java.util.TreeMap;
-
-import andevcba.com.githubmvp.data.model.Repo;
+import andevcba.com.githubmvp.data.model.ReposByUsername;
 
 /**
  * Callback for repo response or error.
@@ -11,7 +8,7 @@ import andevcba.com.githubmvp.data.model.Repo;
  * @author lucas.nobile
  */
 public interface ReposCallback {
-    void onResponse(TreeMap<String, List<Repo>> reposByUsername);
+    void onResponse(ReposByUsername response);
 
     void onError(String error);
 }

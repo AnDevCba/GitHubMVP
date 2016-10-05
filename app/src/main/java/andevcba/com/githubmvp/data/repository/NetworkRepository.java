@@ -3,6 +3,7 @@ package andevcba.com.githubmvp.data.repository;
 import java.util.List;
 import java.util.TreeMap;
 
+import andevcba.com.githubmvp.data.model.ReposByUsername;
 import andevcba.com.githubmvp.data.net.GitHubApiClient;
 import andevcba.com.githubmvp.data.model.Repo;
 import retrofit2.Call;
@@ -28,9 +29,12 @@ public class NetworkRepository implements Repository {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 if (response.isSuccessful() && !response.body().isEmpty()) {
-                    TreeMap<String, List<Repo>> repos = new TreeMap<>();
-                    repos.put(username, response.body());
-                    callback.onResponse(repos);
+                    TreeMap<String, List<Repo>> reposByUsername = new TreeMap<>();
+                    reposByUsername.put(username, response.body());
+
+                    ReposByUsername repoResponse = new ReposByUsername(reposByUsername, false /* is cached */);
+
+                    callback.onResponse(repoResponse);
                 } else {
                     callback.onError(response.message());
                 }
@@ -44,7 +48,12 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public void loadReposByUsername(ReposCallback callback) {
+    public void saveReposByUsername(ReposByUsername reposByUsername) {
+        throw new UnsupportedOperationException("Invalid operation!");
+    }
+
+    @Override
+    public void loadAllRepos(ReposCallback callback) {
         throw new UnsupportedOperationException("Invalid operation!");
     }
 }

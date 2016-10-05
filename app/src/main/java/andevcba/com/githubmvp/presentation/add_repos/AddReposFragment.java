@@ -22,11 +22,10 @@ import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import andevcba.com.githubmvp.R;
-import andevcba.com.githubmvp.data.model.Repo;
 import andevcba.com.githubmvp.presentation.show_repos.model.RepoUI;
+import andevcba.com.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import andevcba.com.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import andevcba.com.githubmvp.presentation.show_repos.view.ShowReposAdapter;
 import andevcba.com.githubmvp.presentation.show_repos.view.ShowReposFragment;
@@ -128,9 +127,10 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         if (savedInstanceState != null) {
-            TreeMap<String, List<Repo>> data = (TreeMap<String, List<Repo>>) savedInstanceState.getSerializable(KEY_REPOS_BY_USERNAME);
-            presenter.restoreStateAndShowReposByUsername(data);
+            ReposByUsernameUI reposByUsernameUI = savedInstanceState.getParcelable(KEY_REPOS_BY_USERNAME);
+            presenter.restoreStateAndShowReposByUsername(reposByUsernameUI);
         }
     }
 
@@ -138,7 +138,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(KEY_REPOS_BY_USERNAME, presenter.getReposByUsername());
+        outState.putParcelable(KEY_REPOS_BY_USERNAME, presenter.getReposByUsernameUI());
     }
 
     @Override

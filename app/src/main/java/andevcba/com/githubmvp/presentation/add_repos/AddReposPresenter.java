@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.TreeMap;
 
 import andevcba.com.githubmvp.data.model.Repo;
+import andevcba.com.githubmvp.data.model.ReposByUsername;
 import andevcba.com.githubmvp.data.net.GitHubApiClient;
-import andevcba.com.githubmvp.data.repository.ReposCache;
 import andevcba.com.githubmvp.data.repository.ReposCallback;
-import andevcba.com.githubmvp.domain.interactor.Interactor;
+import andevcba.com.githubmvp.domain.interactor.SaveReposInteractor;
 import andevcba.com.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 import andevcba.com.githubmvp.presentation.show_repos.model.RepoUI;
-import andevcba.com.githubmvp.presentation.show_repos.model.StickyHeaderUI;
+import andevcba.com.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import andevcba.com.githubmvp.presentation.show_repos.view.ViewType;
-import andevcba.com.githubmvp.data.DependencyProvider;
 
 /**
  * Presenter that handles user actions from {@link AddReposFragment} view,
@@ -26,13 +25,14 @@ import andevcba.com.githubmvp.data.DependencyProvider;
 public class AddReposPresenter implements AddReposContract.Presenter, ReposCallback {
 
     private AddReposContract.View view;
-    private ReposCache reposCache;
-    private Interactor interactor;
-    private TreeMap<String, List<Repo>> reposByUsername;
+    private SearchReposByUsernameInteractor searchReposInteractor;
+    private SaveReposInteractor saveReposInteractor;
+    private ReposByUsernameUI reposByUsernameUI;
 
     public AddReposPresenter(AddReposContract.View view) {
         this.view = view;
-        reposCache = DependencyProvider.provideReposCache();
+        searchReposInteractor = new SearchReposByUsernameInteractor(this);
+        saveReposInteractor = new SaveReposInteractor();
     }
 
     @Override
@@ -40,23 +40,23 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         if (username.isEmpty()) {
             view.showEmptyUsernameError();
         } else {
-            String formattedUsername = username.toLowerCase().trim();
             view.hideSoftKeyboard();
             view.showProgressBar(true);
-            interactor = new SearchReposByUsernameInteractor(formattedUsername, DependencyProvider.provideRepositoryFactory(reposCache), this);
-            interactor.execute();
+
+            String formattedUsername = username.toLowerCase().trim();
+            searchReposInteractor.setUsername(formattedUsername);
+            searchReposInteractor.execute();
         }
     }
 
     @Override
-    public void onResponse(TreeMap<String, List<Repo>> reposByUsername) {
-        this.reposByUsername = reposByUsername;
+    public void onResponse(ReposByUsername response) {
         view.showProgressBar(false);
-        List<ViewType> items = transformResponseToViewTypes(reposByUsername);
+        reposByUsernameUI = transformDataToViewModel(response);
+        List<ViewType> items = reposByUsernameUI.getViewTypes();
         view.showRepos(items);
 
-        if (reposCache.isCached(reposByUsername.firstKey())) {
-            view.showProgressBar(false);
+        if (response.isCached()) {
             view.showReposAlreadySaved();
             view.showSaveReposButton(false);
         } else {
@@ -73,8 +73,10 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
     @Override
     public void saveReposByUsername() {
-        String username = reposByUsername.firstKey();
-        reposCache.put(username, reposByUsername.get(username));
+        ReposByUsername data = transformViewModelToData(reposByUsernameUI);
+        saveReposInteractor.setReposByUsername(data);
+        saveReposInteractor.execute();
+
         view.goToShowReposScreen();
     }
 
@@ -89,19 +91,18 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         view.showGitHubRepoPage(url);
     }
 
-    @Override
-    public TreeMap<String, List<Repo>> getReposByUsername() {
-        return reposByUsername;
+    public ReposByUsernameUI getReposByUsernameUI() {
+        return reposByUsernameUI;
     }
 
     @Override
-    public void restoreStateAndShowReposByUsername(TreeMap<String, List<Repo>> reposByUsername) {
+    public void restoreStateAndShowReposByUsername(ReposByUsernameUI reposByUsername) {
         if (reposByUsername != null) {
-            this.reposByUsername = reposByUsername;
-            List<ViewType> items = transformResponseToViewTypes(reposByUsername);
+            this.reposByUsernameUI = reposByUsername;
+            List<ViewType> items = reposByUsernameUI.getViewTypes();
             view.showRepos(items);
 
-            if (reposCache.isCached(reposByUsername.firstKey())) {
+            if (reposByUsername.isCached()) {
                 view.showReposAlreadySaved();
                 view.showSaveReposButton(false);
             } else {
@@ -110,14 +111,29 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         }
     }
 
-    private List<ViewType> transformResponseToViewTypes(TreeMap<String, List<Repo>> reposByUsername) {
-        List<ViewType> items = new ArrayList<>();
-        String username = reposByUsername.firstKey();
-        items.add(new StickyHeaderUI(username));
-        List<Repo> repos = reposByUsername.get(username);
-        for (Repo repo : repos) {
-            items.add(new RepoUI(repo.getId(), repo.getName(), repo.getUrl(), repo.getCreatedAt(), repo.getStars(), repo.getLanguage()));
+    private ReposByUsernameUI transformDataToViewModel(ReposByUsername data) {
+        TreeMap<String, List<RepoUI>> reposMap = new TreeMap<>();
+        for (TreeMap.Entry<String, List<Repo>> entry : data.getReposByUsername().entrySet()) {
+            String username = entry.getKey();
+            List<RepoUI> repos = new ArrayList<>();
+            for (Repo repo : entry.getValue()) {
+                repos.add(new RepoUI(repo.getName(), repo.getUrl()));
+            }
+            reposMap.put(username, repos);
         }
-        return items;
+        return new ReposByUsernameUI(reposMap, data.isCached());
+    }
+
+    private ReposByUsername transformViewModelToData(ReposByUsernameUI reposByUsername) {
+        TreeMap<String, List<Repo>> reposMap = new TreeMap<>();
+        for (TreeMap.Entry<String, List<RepoUI>> entry : reposByUsername.getReposByUsername().entrySet()) {
+            String username = entry.getKey();
+            List<Repo> repos = new ArrayList<>();
+            for (RepoUI repo : entry.getValue()) {
+                repos.add(new Repo(repo.getName(), repo.getUrl()));
+            }
+            reposMap.put(username, repos);
+        }
+        return new ReposByUsername(reposMap, reposByUsername.isCached());
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import andevcba.com.githubmvp.data.model.Repo;
+import andevcba.com.githubmvp.data.model.ReposByUsername;
 
 /**
  * Concrete implementation to load {@link Repo}s from memory.
@@ -36,13 +37,23 @@ public class InMemoryRepository implements Repository {
 
     @Override
     public void searchReposByUsername(String username, ReposCallback callback) {
-        TreeMap<String, List<Repo>> reposByUsername = new TreeMap<>();
-        reposByUsername.put(username, reposCache.get(username));
-        callback.onResponse(reposByUsername);
+        if (reposCache.isCached(username)) {
+            TreeMap<String, List<Repo>> reposByUsername = new TreeMap<>();
+            reposByUsername.put(username, reposCache.get(username));
+            ReposByUsername repoResponse = new ReposByUsername(reposByUsername, true /* is cached */);
+            callback.onResponse(repoResponse);
+        }
     }
 
     @Override
-    public void loadReposByUsername(ReposCallback callback) {
-        callback.onResponse(reposCache.getAll());
+    public void saveReposByUsername(ReposByUsername reposByUsername) {
+        String username = reposByUsername.getReposByUsername().firstKey();
+        reposCache.put(username, reposByUsername.getReposByUsername().get(username));
+    }
+
+    @Override
+    public void loadAllRepos(ReposCallback callback) {
+        ReposByUsername reposByUsername = new ReposByUsername(reposCache.getAll(), !reposCache.getAll().isEmpty() /* is cached */);
+        callback.onResponse(reposByUsername);
     }
 }
