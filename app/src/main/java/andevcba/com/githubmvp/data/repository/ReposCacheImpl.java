@@ -19,8 +19,8 @@ public class ReposCacheImpl implements ReposCache {
     }
 
     @Override
-    public void put(String username, List<Repo> repos) {
-        cachedRepos.put(username, repos);
+    public List<Repo> put(String username, List<Repo> repos) {
+        return cachedRepos.put(username, repos);
     }
 
     @Override

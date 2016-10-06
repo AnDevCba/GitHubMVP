@@ -12,7 +12,7 @@ import andevcba.com.githubmvp.data.model.Repo;
  */
 public interface ReposCache {
 
-    void put(String username, List<Repo> repos);
+    List<Repo> put(String username, List<Repo> repos);
 
     List<Repo> get(String username);
 
