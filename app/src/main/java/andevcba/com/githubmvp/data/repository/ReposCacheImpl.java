@@ -12,7 +12,12 @@ import andevcba.com.githubmvp.data.model.Repo;
  */
 public class ReposCacheImpl implements ReposCache {
 
-    private TreeMap<String, List<Repo>> cachedRepos; // username, list of repos
+    /**
+     * This method has reduced visibility for testing and is only visible to tests in the same
+     * package.
+     */
+//    @VisibleForTesting
+    TreeMap<String, List<Repo>> cachedRepos; // username, list of repos
 
     public ReposCacheImpl() {
         cachedRepos = new TreeMap<>();
