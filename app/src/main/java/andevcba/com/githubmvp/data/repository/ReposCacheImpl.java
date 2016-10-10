@@ -1,5 +1,7 @@
 package andevcba.com.githubmvp.data.repository;
 
+import android.support.annotation.VisibleForTesting;
+
 import java.util.List;
 import java.util.TreeMap;
 
@@ -13,10 +15,10 @@ import andevcba.com.githubmvp.data.model.Repo;
 public class ReposCacheImpl implements ReposCache {
 
     /**
-     * This method has reduced visibility for testing and is only visible to tests in the same
-     * package.
+     * This method has reduced visibility for testing
+     * and is only visible to tests in the same package.
      */
-//    @VisibleForTesting
+    @VisibleForTesting
     TreeMap<String, List<Repo>> cachedRepos; // username, list of repos
 
     public ReposCacheImpl() {
