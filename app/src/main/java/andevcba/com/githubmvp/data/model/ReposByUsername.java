@@ -6,7 +6,7 @@ import java.util.TreeMap;
 /**
  * Model class for repos by username.
  * <p>
- * True if is cached, flase otherwise.
+ * True if is cached, false otherwise.
  *
  * @author lucas.nobile
  */

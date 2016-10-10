@@ -48,7 +48,8 @@ public class InMemoryRepository implements Repository {
     @Override
     public void saveReposByUsername(ReposByUsername reposByUsername) {
         String username = reposByUsername.getReposByUsername().firstKey();
-        reposCache.put(username, reposByUsername.getReposByUsername().get(username));
+        List<Repo> repos = reposByUsername.getReposByUsername().get(username);
+        reposCache.put(username, repos);
     }
 
     @Override
