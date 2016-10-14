@@ -1,0 +1,64 @@
+package com.andevcba.githubmvp.data.repository;
+
+import java.util.List;
+import java.util.TreeMap;
+
+import com.andevcba.githubmvp.data.model.ErrorResponse;
+import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
+import com.andevcba.githubmvp.data.model.ReposByUsername;
+import com.andevcba.githubmvp.data.net.GitHubApiClient;
+import com.andevcba.githubmvp.data.model.Repo;
+import retrofit2.Call;
+import retrofit2.Response;
+
+/**
+ * Concrete implementation to load {@link Repo}s from network.
+ *
+ * @author lucas.nobile
+ */
+public class NetworkRepository implements Repository {
+
+    private GitHubApiClient gitHubApiClient;
+
+    public NetworkRepository(GitHubApiClient gitHubApiClient) {
+        this.gitHubApiClient = gitHubApiClient;
+    }
+
+    @Override
+    public void searchReposByUsername(final String username, final ReposCallback callback) {
+        Call<List<Repo>> call = gitHubApiClient.searchReposByUsername(username);
+        call.enqueue(new retrofit2.Callback<List<Repo>>() {
+            @Override
+            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+                if (response.isSuccessful() && !response.body().isEmpty()) {
+                    TreeMap<String, List<Repo>> reposByUsername = new TreeMap<>();
+                    reposByUsername.put(username, response.body());
+
+                    ReposByUsername repoResponse = new ReposByUsername(reposByUsername, false /* is cached */);
+
+                    callback.onResponse(repoResponse);
+                } else {
+                    // Error such as resource not found
+                    ErrorResponse errorResponse = ErrorResponseHelper.parseError(response);
+                    callback.onError(errorResponse.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Repo>> call, Throwable t) {
+                // Error such as no internet connection
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void saveReposByUsername(ReposByUsername reposByUsername) {
+        throw new UnsupportedOperationException("Invalid operation!");
+    }
+
+    @Override
+    public void loadAllRepos(ReposCallback callback) {
+        throw new UnsupportedOperationException("Invalid operation!");
+    }
+}
