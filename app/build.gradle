@@ -41,4 +41,6 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockitoVersion"
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.ext.retrofitVersion"
+
 }

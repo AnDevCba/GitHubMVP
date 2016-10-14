@@ -3,6 +3,8 @@ package andevcba.com.githubmvp.data.repository;
 import java.util.List;
 import java.util.TreeMap;
 
+import andevcba.com.githubmvp.data.model.ErrorResponse;
+import andevcba.com.githubmvp.data.model.ErrorResponseHelper;
 import andevcba.com.githubmvp.data.model.ReposByUsername;
 import andevcba.com.githubmvp.data.net.GitHubApiClient;
 import andevcba.com.githubmvp.data.model.Repo;
@@ -16,15 +18,15 @@ import retrofit2.Response;
  */
 public class NetworkRepository implements Repository {
 
-    private GitHubApiClient apiClient;
+    private GitHubApiClient gitHubApiClient;
 
-    public NetworkRepository(GitHubApiClient apiClient) {
-        this.apiClient = apiClient;
+    public NetworkRepository(GitHubApiClient gitHubApiClient) {
+        this.gitHubApiClient = gitHubApiClient;
     }
 
     @Override
     public void searchReposByUsername(final String username, final ReposCallback callback) {
-        Call<List<Repo>> call = apiClient.searchReposByUsername(username);
+        Call<List<Repo>> call = gitHubApiClient.searchReposByUsername(username);
         call.enqueue(new retrofit2.Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
@@ -36,12 +38,15 @@ public class NetworkRepository implements Repository {
 
                     callback.onResponse(repoResponse);
                 } else {
-                    callback.onError(response.message());
+                    // Error such as resource not found
+                    ErrorResponse errorResponse = ErrorResponseHelper.parseError(response);
+                    callback.onError(errorResponse.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Repo>> call, Throwable t) {
+                // Error such as no internet connection
                 callback.onError(t.getMessage());
             }
         });

@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DependencyProvider {
 
     private static ReposCache reposCache;
+    private static Retrofit retrofit;
     private static GitHubApiClient gitHubApiClient;
     private static RepositoryFactory repositoryFactory;
     private static Repository inMemoryRepository;
@@ -28,14 +29,26 @@ public class DependencyProvider {
         return reposCache;
     }
 
-    public static GitHubApiClient provideGitHubApiClient() {
-        if (gitHubApiClient == null) {
-            Retrofit retrofit = new Retrofit.Builder()
+    public static Retrofit provideRetrofit() {
+        // Add interceptor to log request and response.
+        // Use this for testing purpose only.
+//            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+//            builder.addInterceptor(new LoggingInterceptor());
+//            OkHttpClient client = builder.build();
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
                     .baseUrl(GitHubApiClient.ENDPOINT)
+//                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+        }
+        return retrofit;
+    }
 
-            gitHubApiClient = retrofit.create(GitHubApiClient.class);
+    public static GitHubApiClient provideGitHubApiClient() {
+        if (gitHubApiClient == null) {
+            gitHubApiClient = provideRetrofit().create(GitHubApiClient.class);
         }
         return gitHubApiClient;
     }
