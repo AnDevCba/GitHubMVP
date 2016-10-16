@@ -1,10 +1,12 @@
 package com.andevcba.githubmvp.data.net;
 
+import com.andevcba.githubmvp.data.model.Repo;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.andevcba.githubmvp.data.model.Repo;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Path;
 import retrofit2.mock.BehaviorDelegate;
 import retrofit2.mock.Calls;
@@ -16,9 +18,9 @@ import retrofit2.mock.Calls;
  */
 public class MockGitHubApiClient implements GitHubApiClient {
 
-    private final static Repo REPO1 = new Repo("repo1", "url1");
-    private final static Repo REPO2 = new Repo("repo2", "url2");
-    private static List<Repo> REPO_LIST = new ArrayList<>();
+    private final Repo REPO1 = new Repo("repo1", "url1");
+    private final Repo REPO2 = new Repo("repo2", "url2");
+    private List<Repo> REPO_LIST = new ArrayList<>();
 
     private final BehaviorDelegate<GitHubApiClient> delegate;
 
@@ -32,7 +34,7 @@ public class MockGitHubApiClient implements GitHubApiClient {
 
     @Override
     public Call<List<Repo>> searchReposByUsername(@Path("username") String username) {
-        Call<List<Repo>> response = Calls.response(REPO_LIST);
-        return delegate.returning(response).searchReposByUsername(username);
+        Response response = Response.success(REPO_LIST);
+        return delegate.returning(Calls.response(response)).searchReposByUsername(username);
     }
 }
