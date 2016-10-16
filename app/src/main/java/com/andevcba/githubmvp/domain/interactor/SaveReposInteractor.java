@@ -3,6 +3,7 @@ package com.andevcba.githubmvp.domain.interactor;
 import com.andevcba.githubmvp.data.DependencyProvider;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.repository.ReposCache;
+import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.data.repository.Repository;
 
 /**
@@ -20,7 +21,6 @@ public class SaveReposInteractor implements Interactor {
         repository = DependencyProvider.provideInMemoryRepository(reposCache);
     }
 
-
     public ReposByUsername getReposByUsername() {
         return reposByUsername;
     }
@@ -30,7 +30,9 @@ public class SaveReposInteractor implements Interactor {
     }
 
     @Override
-    public void execute() {
+    public void execute(ReposCallback callback) {
         repository.saveReposByUsername(reposByUsername);
+        // FIXME Need to use the callback here?
+//        callback.onResponse(reposByUsername);
     }
 }

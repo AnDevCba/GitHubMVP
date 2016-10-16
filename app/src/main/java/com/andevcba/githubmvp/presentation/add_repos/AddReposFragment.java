@@ -18,18 +18,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.brandongogetap.stickyheaders.StickyLayoutManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.data.DependencyProvider;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposAdapter;
 import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
+import com.brandongogetap.stickyheaders.StickyLayoutManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Allows the user to search for repos by username and shows repos if any.
@@ -69,7 +69,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new AddReposPresenter(this);
+        presenter = new AddReposPresenter(DependencyProvider.provideSearchReposByUsernameInteractor(), DependencyProvider.provideSaveReposInteractor(), this);
         adapter = new ShowReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
     }
 
@@ -146,7 +146,8 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     }
 
     @Override
-    public void showRepos(List<ViewType> repos) {
+    public void showRepos(ReposByUsernameUI reposByUsernameUI) {
+        List<ViewType> repos = reposByUsernameUI.getViewTypes();
         rvShowRepos.setVisibility(View.VISIBLE);
         adapter.addAll(repos);
     }

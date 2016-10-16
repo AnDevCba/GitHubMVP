@@ -12,17 +12,15 @@ import com.andevcba.githubmvp.data.repository.Repository;
  */
 public class LoadReposInteractor implements Interactor {
 
-    private ReposCallback callback;
     private Repository repository;
 
-    public LoadReposInteractor(ReposCallback callback) {
-        this.callback = callback;
+    public LoadReposInteractor() {
         ReposCache reposCache = DependencyProvider.provideReposCache();
         repository = DependencyProvider.provideInMemoryRepository(reposCache);
     }
 
     @Override
-    public void execute() {
+    public void execute(ReposCallback callback) {
         repository.loadAllRepos(callback);
     }
 }

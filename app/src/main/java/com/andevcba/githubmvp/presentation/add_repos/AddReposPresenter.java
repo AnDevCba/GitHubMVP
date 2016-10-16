@@ -1,9 +1,5 @@
 package com.andevcba.githubmvp.presentation.add_repos;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
@@ -12,7 +8,10 @@ import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
-import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Presenter that handles user actions from {@link AddReposFragment} view,
@@ -24,15 +23,15 @@ import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
  */
 public class AddReposPresenter implements AddReposContract.Presenter, ReposCallback {
 
-    private AddReposContract.View view;
     private SearchReposByUsernameInteractor searchReposInteractor;
     private SaveReposInteractor saveReposInteractor;
+    private AddReposContract.View view;
     private ReposByUsernameUI reposByUsernameUI;
 
-    public AddReposPresenter(AddReposContract.View view) {
+    public AddReposPresenter(SearchReposByUsernameInteractor searchReposInteractor, SaveReposInteractor saveReposInteractor, AddReposContract.View view) {
+        this.searchReposInteractor = searchReposInteractor;
+        this.saveReposInteractor = saveReposInteractor;
         this.view = view;
-        searchReposInteractor = new SearchReposByUsernameInteractor(this);
-        saveReposInteractor = new SaveReposInteractor();
     }
 
     @Override
@@ -45,18 +44,17 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
             String formattedUsername = username.toLowerCase().trim();
             searchReposInteractor.setUsername(formattedUsername);
-            searchReposInteractor.execute();
+            searchReposInteractor.execute(this);
         }
     }
 
     @Override
-    public void onResponse(ReposByUsername response) {
+    public void onResponse(ReposByUsername data) {
         view.showProgressBar(false);
-        reposByUsernameUI = transformDataToViewModel(response);
-        List<ViewType> items = reposByUsernameUI.getViewTypes();
-        view.showRepos(items);
+        reposByUsernameUI = transformDataToViewModel(data);
+        view.showRepos(reposByUsernameUI);
 
-        if (response.isCached()) {
+        if (data.isCached()) {
             view.showReposAlreadySaved();
             view.showSaveReposButton(false);
         } else {
@@ -75,7 +73,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     public void saveReposByUsername() {
         ReposByUsername data = transformViewModelToData(reposByUsernameUI);
         saveReposInteractor.setReposByUsername(data);
-        saveReposInteractor.execute();
+        saveReposInteractor.execute(this);
 
         view.goToShowReposScreen();
     }
@@ -96,13 +94,12 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     }
 
     @Override
-    public void restoreStateAndShowReposByUsername(ReposByUsernameUI reposByUsername) {
-        if (reposByUsername != null) {
-            this.reposByUsernameUI = reposByUsername;
-            List<ViewType> items = reposByUsernameUI.getViewTypes();
-            view.showRepos(items);
+    public void restoreStateAndShowReposByUsername(ReposByUsernameUI data) {
+        if (data != null) {
+            this.reposByUsernameUI = data;
+            view.showRepos(reposByUsernameUI);
 
-            if (reposByUsername.isCached()) {
+            if (data.isCached()) {
                 view.showReposAlreadySaved();
                 view.showSaveReposButton(false);
             } else {
@@ -111,7 +108,8 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         }
     }
 
-    private ReposByUsernameUI transformDataToViewModel(ReposByUsername data) {
+    @Override
+    public ReposByUsernameUI transformDataToViewModel(ReposByUsername data) {
         TreeMap<String, List<RepoUI>> reposMap = new TreeMap<>();
         for (TreeMap.Entry<String, List<Repo>> entry : data.getReposByUsername().entrySet()) {
             String username = entry.getKey();
@@ -124,9 +122,10 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         return new ReposByUsernameUI(reposMap, data.isCached());
     }
 
-    private ReposByUsername transformViewModelToData(ReposByUsernameUI reposByUsername) {
+    @Override
+    public ReposByUsername transformViewModelToData(ReposByUsernameUI data) {
         TreeMap<String, List<Repo>> reposMap = new TreeMap<>();
-        for (TreeMap.Entry<String, List<RepoUI>> entry : reposByUsername.getReposByUsername().entrySet()) {
+        for (TreeMap.Entry<String, List<RepoUI>> entry : data.getReposByUsername().entrySet()) {
             String username = entry.getKey();
             List<Repo> repos = new ArrayList<>();
             for (RepoUI repo : entry.getValue()) {
@@ -134,6 +133,6 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
             }
             reposMap.put(username, repos);
         }
-        return new ReposByUsername(reposMap, reposByUsername.isCached());
+        return new ReposByUsername(reposMap, data.isCached());
     }
 }

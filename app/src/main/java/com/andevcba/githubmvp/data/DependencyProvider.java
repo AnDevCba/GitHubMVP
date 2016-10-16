@@ -6,6 +6,9 @@ import com.andevcba.githubmvp.data.repository.ReposCache;
 import com.andevcba.githubmvp.data.repository.ReposCacheImpl;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
+import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
+import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -21,6 +24,8 @@ public class DependencyProvider {
     private static GitHubApiClient gitHubApiClient;
     private static RepositoryFactory repositoryFactory;
     private static Repository inMemoryRepository;
+    private static SearchReposByUsernameInteractor searchReposByUsernameInteractor;
+    private static SaveReposInteractor saveReposInteractor;
 
     public static ReposCache provideReposCache() {
         if (reposCache == null) {
@@ -65,5 +70,20 @@ public class DependencyProvider {
             inMemoryRepository = new InMemoryRepository(reposCache);
         }
         return inMemoryRepository;
+    }
+
+    public static SearchReposByUsernameInteractor provideSearchReposByUsernameInteractor() {
+        if (searchReposByUsernameInteractor == null) {
+            searchReposByUsernameInteractor = new SearchReposByUsernameInteractor();
+        }
+        return searchReposByUsernameInteractor;
+    }
+
+
+    public static SaveReposInteractor provideSaveReposInteractor() {
+        if (saveReposInteractor == null) {
+            saveReposInteractor = new SaveReposInteractor();
+        }
+        return saveReposInteractor;
     }
 }
