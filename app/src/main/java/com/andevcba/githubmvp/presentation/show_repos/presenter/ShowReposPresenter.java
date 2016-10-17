@@ -1,9 +1,5 @@
 package com.andevcba.githubmvp.presentation.show_repos.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
@@ -14,6 +10,10 @@ import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Presenter that handles user actions from {@link ShowReposFragment} view,
@@ -31,12 +31,12 @@ public class ShowReposPresenter implements ShowReposContract.Presenter, ReposCal
 
     public ShowReposPresenter(ShowReposFragment view) {
         this.view = view;
-        loadReposInteractor = new LoadReposInteractor(this);
+        loadReposInteractor = new LoadReposInteractor();
     }
 
     @Override
     public void loadAllRepos() {
-        loadReposInteractor.execute();
+        loadReposInteractor.execute(this);
     }
 
     @Override
