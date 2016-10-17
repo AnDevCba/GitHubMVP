@@ -32,7 +32,6 @@ public class SaveReposInteractor implements Interactor {
     @Override
     public void execute(ReposCallback callback) {
         repository.saveReposByUsername(reposByUsername);
-        // FIXME Need to use the callback here?
-//        callback.onResponse(reposByUsername);
+        // No need to use the callback!
     }
 }

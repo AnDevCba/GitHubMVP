@@ -41,11 +41,11 @@ public interface AddReposContract {
 
         void goToGitHubRepoPage(String url);
 
-        ReposByUsernameUI transformDataToViewModel(ReposByUsername data);
+        ReposByUsernameUI transformModelToUiModel(ReposByUsername data);
 
-        ReposByUsername transformViewModelToData(ReposByUsernameUI data);
+        ReposByUsername transformUiModelToModel(ReposByUsernameUI data);
 
-        ReposByUsernameUI getReposByUsernameUI();
+        ReposByUsernameUI getUiModel();
 
         void restoreStateAndShowReposByUsername(ReposByUsernameUI data);
     }

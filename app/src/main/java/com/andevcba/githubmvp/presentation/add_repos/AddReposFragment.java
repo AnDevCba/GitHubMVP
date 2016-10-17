@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class AddReposFragment extends Fragment implements AddReposContract.View {
 
-    private static final String KEY_REPOS_BY_USERNAME = "repos_by_username";
+    private static final String KEY_UI_MODEL = "ui_model";
 
     private AddReposContract.Presenter presenter;
 
@@ -129,15 +129,15 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            ReposByUsernameUI reposByUsernameUI = savedInstanceState.getParcelable(KEY_REPOS_BY_USERNAME);
-            presenter.restoreStateAndShowReposByUsername(reposByUsernameUI);
+            ReposByUsernameUI uiModel = savedInstanceState.getParcelable(KEY_UI_MODEL);
+            presenter.restoreStateAndShowReposByUsername(uiModel);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_REPOS_BY_USERNAME, presenter.getReposByUsernameUI());
+        outState.putParcelable(KEY_UI_MODEL, presenter.getUiModel());
     }
 
     @Override

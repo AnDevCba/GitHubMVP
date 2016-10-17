@@ -3,6 +3,7 @@ package com.andevcba.githubmvp.presentation.add_repos;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.repository.ReposCallback;
+import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 
@@ -47,7 +48,10 @@ public class AddReposPresenterTest {
     private AddReposContract.View view;
 
     @Mock
-    private SearchReposByUsernameInteractor interactor;
+    private SearchReposByUsernameInteractor searchReposByUsernameInteractor;
+
+    @Mock
+    private SaveReposInteractor saveReposInteractor;
 
     /**
      * {@link ArgumentCaptor} is a powerful Mockito API to capture argument values and use them to
@@ -98,8 +102,8 @@ public class AddReposPresenterTest {
         // When
         presenter.searchReposByUsername(NOT_VALID_USERNAME);
 
-        // Callback is captured and invoked with mocked repos by username
-        verify(interactor).execute(reposCallbackArgumentCaptor.capture());
+        // Callback is captured and invoked with stubbed repos by username
+        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onError(ERROR_MESSAGE);
 
         // Then
@@ -114,8 +118,8 @@ public class AddReposPresenterTest {
         // When
         presenter.searchReposByUsername(NOT_IN_CACHE_USERNAME);
 
-        // Callback is captured and invoked with mocked repos by username
-        verify(interactor).execute(reposCallbackArgumentCaptor.capture());
+        // Callback is captured and invoked with stubbed repos by username
+        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onResponse(reposByUsername);
 
         // Then
@@ -125,7 +129,7 @@ public class AddReposPresenterTest {
         inOrder.verify(view).showProgressBar(true);
         inOrder.verify(view).showProgressBar(false);
         // and repos are shown in UI
-        ReposByUsernameUI reposByUsernameUI = presenter.getReposByUsernameUI();
+        ReposByUsernameUI reposByUsernameUI = presenter.getUiModel();
         verify(view).showRepos(reposByUsernameUI);
         verify(view).showSaveReposButton(true);
     }
@@ -138,8 +142,8 @@ public class AddReposPresenterTest {
         // When
         presenter.searchReposByUsername(USERNAME);
 
-        // Callback is captured and invoked with mocked repos by username
-        verify(interactor).execute(reposCallbackArgumentCaptor.capture());
+        // Callback is captured and invoked with stubbed repos by username
+        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onResponse(reposByUsername);
 
         // Then
@@ -149,9 +153,25 @@ public class AddReposPresenterTest {
         inOrder.verify(view).showProgressBar(true);
         inOrder.verify(view).showProgressBar(false);
         // and repos are shown in UI
-        ReposByUsernameUI reposByUsernameUI = presenter.getReposByUsernameUI();
+        ReposByUsernameUI reposByUsernameUI = presenter.getUiModel();
         verify(view).showRepos(reposByUsernameUI);
         verify(view).showReposAlreadySaved();
         verify(view).showSaveReposButton(false);
+    }
+
+    @Test
+    public void saveReposByUsername_shouldGoToShowReposScreen() {
+        // Given a a mocked repos by username that is cached
+        reposByUsername = new ReposByUsername(REPOS_BY_USERNAME_MAP, true /* is cached */);
+
+        // When
+        presenter.saveReposByUsername();
+
+        // Callback is captured and invoked with stubbed repos by username
+        verify(saveReposInteractor).execute(reposCallbackArgumentCaptor.capture());
+        reposCallbackArgumentCaptor.getValue().onResponse(reposByUsername);
+
+        // Then
+        verify(view).goToShowReposScreen();
     }
 }
