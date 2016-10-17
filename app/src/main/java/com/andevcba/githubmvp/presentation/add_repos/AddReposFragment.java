@@ -23,8 +23,8 @@ import com.andevcba.githubmvp.data.DependencyProvider;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
-import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposAdapter;
-import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposAdapter;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
@@ -42,14 +42,14 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     private AddReposContract.Presenter presenter;
 
-    private ShowReposAdapter adapter;
+    private ReposAdapter adapter;
 
     private EditText tvUsername;
     private ProgressBar progressBar;
     private RecyclerView rvShowRepos;
     private FloatingActionButton fab;
 
-    private ShowReposFragment.OnItemSelectedListener itemSelectedListener = new ShowReposFragment.OnItemSelectedListener() {
+    private ReposFragment.OnItemSelectedListener itemSelectedListener = new ReposFragment.OnItemSelectedListener() {
         @Override
         public void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI) {
             presenter.goToGitHubUsernamePage(stickyHeaderUI.getName());
@@ -70,7 +70,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         super.onCreate(savedInstanceState);
 
         presenter = new AddReposPresenter(DependencyProvider.provideSearchReposByUsernameInteractor(), DependencyProvider.provideSaveReposInteractor(), this);
-        adapter = new ShowReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
+        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
     }
 
     @Nullable
@@ -130,7 +130,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
         if (savedInstanceState != null) {
             ReposByUsernameUI uiModel = savedInstanceState.getParcelable(KEY_UI_MODEL);
-            presenter.restoreStateAndShowReposByUsername(uiModel);
+            presenter.restoreStateAndShowRepos(uiModel);
         }
     }
 
@@ -182,19 +182,19 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         }
     }
 
-    public void goToShowReposScreen() {
+    public void navigateToReposScreen() {
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 
     @Override
-    public void showGitHubUsernamePage(String url) {
+    public void browseGitHubUsernamePage(String url) {
         Uri uri = Uri.parse(url);
         browse(uri);
     }
 
     @Override
-    public void showGitHubRepoPage(String url) {
+    public void browseGitHubRepoPage(String url) {
         Uri uri = Uri.parse(url);
         browse(uri);
     }

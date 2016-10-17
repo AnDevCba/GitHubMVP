@@ -6,13 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
-
-import java.util.List;
-
 import com.andevcba.githubmvp.R;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
+import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
+
+import java.util.List;
 
 import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.EMPTY;
 import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.REPO_ITEM;
@@ -25,13 +24,13 @@ import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.STICK
  *
  * @author lucas.nobile
  */
-public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
+public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
 
     private List<ViewType> items;
     private int emptyResId;
-    private ShowReposFragment.OnItemSelectedListener itemSelectedListener;
+    private ReposFragment.OnItemSelectedListener itemSelectedListener;
 
-    public ShowReposAdapter(List<ViewType> items, int emptyResId, ShowReposFragment.OnItemSelectedListener itemSelectedListener) {
+    public ReposAdapter(List<ViewType> items, int emptyResId, ReposFragment.OnItemSelectedListener itemSelectedListener) {
         this.items = items;
         this.emptyResId = emptyResId;
         this.itemSelectedListener = itemSelectedListener;
@@ -104,9 +103,9 @@ public class ShowReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvName;
-        private ShowReposFragment.OnItemSelectedListener itemSelectedListener;
+        private ReposFragment.OnItemSelectedListener itemSelectedListener;
 
-        ViewHolder(View itemView, ShowReposFragment.OnItemSelectedListener listener) {
+        ViewHolder(View itemView, ReposFragment.OnItemSelectedListener listener) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
             itemSelectedListener = listener;

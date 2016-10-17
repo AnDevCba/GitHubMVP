@@ -174,14 +174,14 @@ public class AddReposPresenterTest {
         inOrder.verify(view).showProgressBar(true);
         inOrder.verify(view).showProgressBar(false);
         // and repos are shown in UI
-        ReposByUsernameUI reposByUsernameUI = presenter.getUiModel();
-        verify(view).showRepos(reposByUsernameUI);
+        ReposByUsernameUI uiModel = presenter.getUiModel();
+        verify(view).showRepos(uiModel);
         verify(view).showReposAlreadySaved();
         verify(view).showSaveReposButton(false);
     }
 
     @Test
-    public void saveReposByUsername_shouldGoToShowReposScreen() {
+    public void saveReposByUsername_shouldNavigateToReposScreen() {
         // Given a a stubbed model
         model = new ReposByUsername(REPOS_BY_USERNAME_MAP, true /* is cached */);
 
@@ -193,11 +193,11 @@ public class AddReposPresenterTest {
         reposCallbackArgumentCaptor.getValue().onResponse(model);
 
         // Then
-        verify(view).goToShowReposScreen();
+        verify(view).navigateToReposScreen();
     }
 
     @Test
-    public void goToGitHubUsernamePage_shouldShowGitHubUsernamePage() {
+    public void goToGitHubUsernamePage_shouldBrowseGitHubUsernamePage() {
         // Given a stubbed url
         String url = GitHubApiClient.BASE_URL + USERNAME;
 
@@ -205,11 +205,11 @@ public class AddReposPresenterTest {
         presenter.goToGitHubUsernamePage(USERNAME);
 
         // Then
-        verify(view).showGitHubUsernamePage(url);
+        verify(view).browseGitHubUsernamePage(url);
     }
 
     @Test
-    public void goToGitHubRepoPage_shouldShowGitHubRepoPage() {
+    public void goToGitHubRepoPage_shouldBrowseGitHubRepoPage() {
         // Given a stubbed repo url
         String url = GitHubApiClient.BASE_URL + USERNAME + "/" + REPO_NAME;
 
@@ -217,16 +217,16 @@ public class AddReposPresenterTest {
         presenter.goToGitHubRepoPage(url);
 
         // Then
-        verify(view).showGitHubRepoPage(url);
+        verify(view).browseGitHubRepoPage(url);
     }
 
     @Test
-    public void restoreStateAndShowReposByUsername_with_uiModel_not_in_cache_shouldShowRepos() {
+    public void restoreStateAndShowRepos_with_uiModel_not_in_cache_shouldShowRepos() {
         // Given a stubbed uiModel
         uiModel = new ReposByUsernameUI(REPOS_BY_USERNAME_UI_MAP, false /* is not cached*/);
 
         // When
-        presenter.restoreStateAndShowReposByUsername(uiModel);
+        presenter.restoreStateAndShowRepos(uiModel);
 
         // Then
         verify(view).showRepos(uiModel);
@@ -234,12 +234,12 @@ public class AddReposPresenterTest {
     }
 
     @Test
-    public void restoreStateAndShowReposByUsername_with_uiModel_in_cache_shouldShowRepos() {
+    public void restoreStateAndShowRepos_with_uiModel_in_cache_shouldShowRepos() {
         // Given a stubbed uiModel
         uiModel = new ReposByUsernameUI(REPOS_BY_USERNAME_UI_MAP, true /* is cached*/);
 
         // When
-        presenter.restoreStateAndShowReposByUsername(uiModel);
+        presenter.restoreStateAndShowRepos(uiModel);
 
         // Then
         verify(view).showRepos(uiModel);

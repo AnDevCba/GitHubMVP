@@ -11,6 +11,7 @@ import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 public interface AddReposContract {
 
     interface View {
+
         void showEmptyUsernameError();
 
         void showRepos(ReposByUsernameUI reposByUsernameUI);
@@ -23,16 +24,17 @@ public interface AddReposContract {
 
         void hideSoftKeyboard();
 
-        void goToShowReposScreen();
+        void navigateToReposScreen();
 
-        void showGitHubUsernamePage(String url);
+        void browseGitHubUsernamePage(String url);
 
-        void showGitHubRepoPage(String url);
+        void browseGitHubRepoPage(String url);
 
         void showReposAlreadySaved();
     }
 
     interface Presenter {
+
         void searchReposByUsername(String username);
 
         void saveReposByUsername();
@@ -41,7 +43,7 @@ public interface AddReposContract {
 
         void goToGitHubRepoPage(String url);
 
-        void restoreStateAndShowReposByUsername(ReposByUsernameUI data);
+        void restoreStateAndShowRepos(ReposByUsernameUI data);
 
         ReposByUsernameUI transformModelToUiModel(ReposByUsername data);
 

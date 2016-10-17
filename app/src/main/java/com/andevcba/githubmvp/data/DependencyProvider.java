@@ -6,6 +6,7 @@ import com.andevcba.githubmvp.data.repository.ReposCache;
 import com.andevcba.githubmvp.data.repository.ReposCacheImpl;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
+import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 
@@ -26,6 +27,7 @@ public class DependencyProvider {
     private static Repository inMemoryRepository;
     private static SearchReposByUsernameInteractor searchReposByUsernameInteractor;
     private static SaveReposInteractor saveReposInteractor;
+    private static LoadReposInteractor loadReposInteractor;
 
     public static ReposCache provideReposCache() {
         if (reposCache == null) {
@@ -85,5 +87,12 @@ public class DependencyProvider {
             saveReposInteractor = new SaveReposInteractor();
         }
         return saveReposInteractor;
+    }
+
+    public static LoadReposInteractor provideLoadReposInteractor() {
+        if (loadReposInteractor == null) {
+            loadReposInteractor = new LoadReposInteractor();
+        }
+        return loadReposInteractor;
     }
 }
