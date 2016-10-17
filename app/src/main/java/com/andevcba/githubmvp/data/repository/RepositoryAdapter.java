@@ -1,5 +1,6 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 
 /**
@@ -9,7 +10,7 @@ import com.andevcba.githubmvp.data.model.ReposByUsername;
  */
 
 public class RepositoryAdapter implements Repository {
-    
+
     @Override
     public void searchReposByUsername(String username, ReposCallback callback) {
         // Add behavior on subclass.

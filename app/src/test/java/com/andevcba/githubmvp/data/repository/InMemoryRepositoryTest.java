@@ -1,5 +1,10 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
+import com.andevcba.githubmvp.data.model.Repo;
+import com.andevcba.githubmvp.data.model.ReposByUsername;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +15,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.data.model.Repo;
-import com.andevcba.githubmvp.data.model.ReposByUsername;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;

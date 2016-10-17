@@ -1,6 +1,6 @@
 package com.andevcba.githubmvp.domain.interactor;
 
-import com.andevcba.githubmvp.data.repository.ReposCallback;
+import com.andevcba.githubmvp.data.ReposCallback;
 
 /**
  * Base interactor.

@@ -1,9 +1,9 @@
 package com.andevcba.githubmvp.presentation.add_repos;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
@@ -76,7 +76,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     @Override
     public void saveReposByUsername() {
         saveReposInteractor.setReposByUsername(model);
-        saveReposInteractor.execute(this);
+        saveReposInteractor.execute();
 
         view.navigateToReposScreen();
     }

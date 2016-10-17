@@ -1,5 +1,6 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.ErrorResponse;
 import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
 import com.andevcba.githubmvp.data.model.Repo;

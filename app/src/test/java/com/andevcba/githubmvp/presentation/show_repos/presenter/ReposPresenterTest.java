@@ -1,9 +1,9 @@
 package com.andevcba.githubmvp.presentation.show_repos.presenter;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.ReposContract;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
