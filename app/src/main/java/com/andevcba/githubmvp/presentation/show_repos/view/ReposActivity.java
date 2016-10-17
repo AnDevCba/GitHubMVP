@@ -16,7 +16,7 @@ import com.andevcba.githubmvp.R;
  *
  * @author lucas.nobile
  */
-public class ShowReposActivity extends AppCompatActivity {
+public class ReposActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class ShowReposActivity extends AppCompatActivity {
         setUpToolbar();
 
         if (savedInstanceState == null) {
-            initFragment(ShowReposFragment.newInstance());
+            initFragment(ReposFragment.newInstance());
         }
     }
 

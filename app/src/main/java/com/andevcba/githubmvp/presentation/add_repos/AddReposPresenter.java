@@ -78,22 +78,22 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
         saveReposInteractor.setReposByUsername(model);
         saveReposInteractor.execute(this);
 
-        view.goToShowReposScreen();
+        view.navigateToReposScreen();
     }
 
     @Override
     public void goToGitHubUsernamePage(String username) {
         String url = GitHubApiClient.BASE_URL + username;
-        view.showGitHubUsernamePage(url);
+        view.browseGitHubUsernamePage(url);
     }
 
     @Override
     public void goToGitHubRepoPage(String url) {
-        view.showGitHubRepoPage(url);
+        view.browseGitHubRepoPage(url);
     }
 
     @Override
-    public void restoreStateAndShowReposByUsername(ReposByUsernameUI uiModel) {
+    public void restoreStateAndShowRepos(ReposByUsernameUI uiModel) {
         if (uiModel != null) {
             this.uiModel = uiModel;
             this.model = transformUiModelToModel(uiModel);
