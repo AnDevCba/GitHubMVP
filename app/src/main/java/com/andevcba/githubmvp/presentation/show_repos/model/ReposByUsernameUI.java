@@ -3,11 +3,11 @@ package com.andevcba.githubmvp.presentation.show_repos.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 
 /**
  * UI model for {@link com.andevcba.githubmvp.data.model.ReposByUsername}.
@@ -17,11 +17,11 @@ import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
  */
 public class ReposByUsernameUI implements Parcelable {
 
-    private TreeMap<String, List<RepoUI>> reposByUsername;
+    private TreeMap<String, List<RepoUI>> uiModel;
     private boolean cached;
 
-    public ReposByUsernameUI(TreeMap<String, List<RepoUI>> reposByUsername, boolean cached) {
-        this.reposByUsername = reposByUsername;
+    public ReposByUsernameUI(TreeMap<String, List<RepoUI>> uiModel, boolean cached) {
+        this.uiModel = uiModel;
         this.cached = cached;
     }
 
@@ -31,12 +31,12 @@ public class ReposByUsernameUI implements Parcelable {
             String username = in.readString();
             List<RepoUI> repos = new ArrayList<>();
             in.readTypedList(repos, RepoUI.CREATOR);
-            reposByUsername.put(username, repos);
+            uiModel.put(username, repos);
         }
     }
 
-    public TreeMap<String, List<RepoUI>> getReposByUsername() {
-        return reposByUsername;
+    public TreeMap<String, List<RepoUI>> getUiModel() {
+        return uiModel;
     }
 
     public boolean isCached() {
@@ -45,8 +45,8 @@ public class ReposByUsernameUI implements Parcelable {
 
     public List<ViewType> getViewTypes() {
         List<ViewType> items = new ArrayList<>();
-        if (reposByUsername != null) {
-            for (TreeMap.Entry<String, List<RepoUI>> entry : reposByUsername.entrySet()) {
+        if (uiModel != null) {
+            for (TreeMap.Entry<String, List<RepoUI>> entry : uiModel.entrySet()) {
                 String username = entry.getKey();
                 items.add(new StickyHeaderUI(username));
                 items.addAll(entry.getValue());
@@ -62,8 +62,8 @@ public class ReposByUsernameUI implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(reposByUsername.size());
-        for (TreeMap.Entry<String, List<RepoUI>> entry : reposByUsername.entrySet()) {
+        dest.writeInt(uiModel.size());
+        for (TreeMap.Entry<String, List<RepoUI>> entry : uiModel.entrySet()) {
             dest.writeString(entry.getKey());
             dest.writeTypedList(entry.getValue());
         }

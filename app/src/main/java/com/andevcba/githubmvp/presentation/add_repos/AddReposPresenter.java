@@ -125,7 +125,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     @Override
     public ReposByUsername transformUiModelToModel(ReposByUsernameUI uiModel) {
         TreeMap<String, List<Repo>> reposMap = new TreeMap<>();
-        for (TreeMap.Entry<String, List<RepoUI>> entry : uiModel.getReposByUsername().entrySet()) {
+        for (TreeMap.Entry<String, List<RepoUI>> entry : uiModel.getUiModel().entrySet()) {
             String username = entry.getKey();
             List<Repo> repos = new ArrayList<>();
             for (RepoUI repo : entry.getValue()) {
