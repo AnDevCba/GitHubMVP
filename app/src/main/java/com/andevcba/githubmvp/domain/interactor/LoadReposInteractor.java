@@ -10,7 +10,7 @@ import com.andevcba.githubmvp.data.repository.Repository;
  *
  * @author lucas.nobile
  */
-public class LoadReposInteractor implements Interactor {
+public class LoadReposInteractor extends InteractorAdapter {
 
     private Repository repository;
 

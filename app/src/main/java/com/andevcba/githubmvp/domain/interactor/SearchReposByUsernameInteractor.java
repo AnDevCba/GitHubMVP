@@ -11,7 +11,7 @@ import com.andevcba.githubmvp.data.repository.RepositoryFactory;
  *
  * @author lucas.nobile
  */
-public class SearchReposByUsernameInteractor implements Interactor {
+public class SearchReposByUsernameInteractor extends InteractorAdapter {
 
     private String username;
     private RepositoryFactory factory;

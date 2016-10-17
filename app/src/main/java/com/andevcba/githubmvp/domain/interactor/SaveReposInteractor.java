@@ -3,7 +3,6 @@ package com.andevcba.githubmvp.domain.interactor;
 import com.andevcba.githubmvp.data.DependencyProvider;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.data.repository.Repository;
 
 /**
@@ -11,7 +10,7 @@ import com.andevcba.githubmvp.data.repository.Repository;
  *
  * @author lucas.nobile
  */
-public class SaveReposInteractor implements Interactor {
+public class SaveReposInteractor extends InteractorAdapter {
 
     private ReposByUsername reposByUsername;
     private Repository repository;
@@ -21,17 +20,12 @@ public class SaveReposInteractor implements Interactor {
         repository = DependencyProvider.provideInMemoryRepository(reposCache);
     }
 
-    public ReposByUsername getReposByUsername() {
-        return reposByUsername;
-    }
-
     public void setReposByUsername(ReposByUsername reposByUsername) {
         this.reposByUsername = reposByUsername;
     }
 
     @Override
-    public void execute(ReposCallback callback) {
+    public void execute() {
         repository.saveReposByUsername(reposByUsername);
-        // No need to use the callback!
     }
 }

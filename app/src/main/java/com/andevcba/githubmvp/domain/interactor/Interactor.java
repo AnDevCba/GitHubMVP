@@ -9,5 +9,7 @@ import com.andevcba.githubmvp.data.repository.ReposCallback;
  */
 public interface Interactor {
 
+    void execute();
+
     void execute(ReposCallback callback);
 }
