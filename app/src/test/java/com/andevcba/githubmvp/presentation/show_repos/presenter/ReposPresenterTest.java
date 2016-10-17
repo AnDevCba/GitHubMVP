@@ -183,11 +183,11 @@ public class ReposPresenterTest {
 
         // Then
         assertEquals(model.isCached(), localUiModel.isCached());
-        assertEquals(model.getReposByUsername().firstKey(), localUiModel.getReposByUsername().firstKey());
-        assertEquals(model.getReposByUsername().get(USERNAME).size(), localUiModel.getReposByUsername().get(USERNAME).size());
-        assertEquals(model.getReposByUsername().get(USERNAME).get(0).getName(), localUiModel.getReposByUsername().get(USERNAME).get(0).getName());
-        assertEquals(model.getReposByUsername().get(USERNAME).get(0).getUrl(), localUiModel.getReposByUsername().get(USERNAME).get(0).getUrl());
-        assertEquals(model.getReposByUsername().get(USERNAME).get(1).getName(), localUiModel.getReposByUsername().get(USERNAME).get(1).getName());
-        assertEquals(model.getReposByUsername().get(USERNAME).get(1).getUrl(), localUiModel.getReposByUsername().get(USERNAME).get(1).getUrl());
+        assertEquals(model.getReposByUsername().firstKey(), localUiModel.getUiModel().firstKey());
+        assertEquals(model.getReposByUsername().get(USERNAME).size(), localUiModel.getUiModel().get(USERNAME).size());
+        assertEquals(model.getReposByUsername().get(USERNAME).get(0).getName(), localUiModel.getUiModel().get(USERNAME).get(0).getName());
+        assertEquals(model.getReposByUsername().get(USERNAME).get(0).getUrl(), localUiModel.getUiModel().get(USERNAME).get(0).getUrl());
+        assertEquals(model.getReposByUsername().get(USERNAME).get(1).getName(), localUiModel.getUiModel().get(USERNAME).get(1).getName());
+        assertEquals(model.getReposByUsername().get(USERNAME).get(1).getUrl(), localUiModel.getUiModel().get(USERNAME).get(1).getUrl());
     }
 }
