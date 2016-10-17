@@ -2,6 +2,7 @@ package com.andevcba.githubmvp.presentation.add_repos;
 
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
+import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
@@ -35,6 +36,8 @@ public class AddReposPresenterTest {
     private final static String USERNAME = "AnDevCba";
     private final static String NOT_IN_CACHE_USERNAME = "NotInCache";
     private final static String NOT_VALID_USERNAME = "Na_Na_Na_Na_Na_Na_Na_Naa_Batman";
+    private final static String REPO_NAME = "RepoName";
+
     private final static String ERROR_MESSAGE = "Error message";
 
     private final static Repo REPO1 = new Repo("repo1", "url1");
@@ -173,5 +176,29 @@ public class AddReposPresenterTest {
 
         // Then
         verify(view).goToShowReposScreen();
+    }
+
+    @Test
+    public void goToGitHubUsernamePage_shouldShowGitHubUsernamePage() {
+        // Given a stubbed url
+        String url = GitHubApiClient.BASE_URL + USERNAME;
+
+        // When
+        presenter.goToGitHubUsernamePage(USERNAME);
+
+        // Then
+        verify(view).showGitHubUsernamePage(url);
+    }
+
+    @Test
+    public void goToGitHubRepoPage_shouldShowGitHubRepoPage() {
+        // Given a stubbed repo url
+        String url = GitHubApiClient.BASE_URL + USERNAME + "/" + REPO_NAME;
+
+        // When
+        presenter.goToGitHubRepoPage(url);
+
+        // Then
+        verify(view).showGitHubRepoPage(url);
     }
 }
