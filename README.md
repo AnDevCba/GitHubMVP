@@ -18,3 +18,6 @@ Android app that allows the user to search for GitHub repos by a given user name
 4. [Unit Testing - Network repository:](https://github.com/AnDevCba/GitHubMVP/pull/12/files) add Unit Tests for NetworkRepository component mocking service responses.
 5. [Unit Testing - Save repos interactor:](https://github.com/AnDevCba/GitHubMVP/pull/13/files) add Unit Tests for SaveReposInteractor component.
 6. [Unit Testing - Search repos by username interactor:](https://github.com/AnDevCba/GitHubMVP/pull/14/files) add Unit Tests for SearchReposByUsernameInteractor component mocking service response.
+7. [Unit Testing - Add repos presenter:](https://github.com/AnDevCba/GitHubMVP/pull/15/files) add Unit Tests for AddReposPresenter component.
+8. [Unit Testing - Repos presenter:](https://github.com/AnDevCba/GitHubMVP/pull/16/files) add Unit Tests for ReposPresenter component.
+9. [Unit Testing - Repos by username UI model:](https://github.com/AnDevCba/GitHubMVP/pull/17/files) add Unit Tests for ReposByUsernameUI model.
