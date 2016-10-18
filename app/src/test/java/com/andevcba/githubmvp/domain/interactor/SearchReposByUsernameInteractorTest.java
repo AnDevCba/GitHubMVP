@@ -60,7 +60,7 @@ public class SearchReposByUsernameInteractorTest {
 
     @Test
     public void execute_with_username_not_in_cache_shouldRetrieveReposByUsernameFromNetwork() throws IOException {
-        // Given a subbed repos cache with username not in cache
+        // Given a stubbed repos cache with username not in cache
 
         // When
         interactor.setUsername(NOT_IN_CACHE_USERNAME);
@@ -72,7 +72,7 @@ public class SearchReposByUsernameInteractorTest {
 
     @Test
     public void execute_with_cached_username_shouldRetrieveReposByUsernameFromInMemoryCache() {
-        // Given a subbed repos cache with username cached
+        // Given a stubbed repos cache with username cached
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
         reposCache.put(USERNAME, REPO_LIST);

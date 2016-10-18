@@ -71,19 +71,19 @@ public class ReposPresenterTest {
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
 
-        // Mocked repo list
+        // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
 
-        // Mocked repos by username
+        // Stubbed repos by username
         REPOS_BY_USERNAME_MAP = new TreeMap<>();
         REPOS_BY_USERNAME_MAP.put(USERNAME, REPO_LIST);
 
-        // Mocked repo list
+        // Stubbed repo UI list
         REPO_UI_LIST.add(REPO_UI1);
         REPO_UI_LIST.add(REPO_UI2);
 
-        // Mocked repos by username
+        // Stubbed repos by username UI model
         REPOS_BY_USERNAME_UI_MAP = new TreeMap<>();
         REPOS_BY_USERNAME_UI_MAP.put(USERNAME, REPO_UI_LIST);
     }
