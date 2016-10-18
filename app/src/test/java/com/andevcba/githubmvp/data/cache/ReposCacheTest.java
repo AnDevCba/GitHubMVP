@@ -43,11 +43,11 @@ public class ReposCacheTest {
 
         reposCache = new ReposCacheImpl();
 
-        // Mocked repo list
+        // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
 
-        // Mocked repos by username
+        // Stubbed repos by username
         REPOS_BY_USERNAME.put(USERNAME, REPO_LIST);
     }
 
@@ -58,7 +58,7 @@ public class ReposCacheTest {
 
     @Test
     public void put_shouldSaveUsernameAndListOfRepos() {
-        // Given (pre-condition(s)) a mocked username and repo list
+        // Given (pre-condition(s)) a stubbed username and repo list
 
         // When
         reposCache.put(USERNAME, REPO_LIST);
@@ -76,7 +76,7 @@ public class ReposCacheTest {
 
     @Test
     public void get_by_username_in_cache_shouldReturnAListOfRepos() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -91,7 +91,7 @@ public class ReposCacheTest {
 
     @Test
     public void get_by_username_not_in_cache_shouldReturnNull() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -103,7 +103,7 @@ public class ReposCacheTest {
 
     @Test
     public void getAll_shouldReturnAMapOfReposByUsername() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -118,7 +118,7 @@ public class ReposCacheTest {
 
     @Test
     public void isCached_shouldReturnTrueIfUsernameIsInCache() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -130,7 +130,7 @@ public class ReposCacheTest {
 
     @Test
     public void isCached_shouldReturnFalseIfUsernameIsNotInCache() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
