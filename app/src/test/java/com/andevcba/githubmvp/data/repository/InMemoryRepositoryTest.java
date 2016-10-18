@@ -51,11 +51,11 @@ public class InMemoryRepositoryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        // Mocked repo list
+        // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
 
-        // Mocked repos by username
+        // Stubbed repos by username
         REPOS_BY_USERNAME_MAP = new TreeMap<>();
         REPOS_BY_USERNAME_MAP.put(USERNAME, REPO_LIST);
 
@@ -69,7 +69,7 @@ public class InMemoryRepositoryTest {
 
     @Test
     public void searchReposByUsername_in_cache_shouldInvokeReposCallback() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -82,7 +82,7 @@ public class InMemoryRepositoryTest {
 
     @Test
     public void searchReposByUsername_not_in_cache_shouldNotInvokeReposCallback() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -95,7 +95,7 @@ public class InMemoryRepositoryTest {
 
     @Test
     public void saveReposByUsername_shouldAddInCache() {
-        // Given a mocked cache with NO repos by username
+        // Given a cache with NO repos by username
 
         // When
         inMemoryRepository.saveReposByUsername(reposByUsername);
@@ -106,7 +106,7 @@ public class InMemoryRepositoryTest {
 
     @Test
     public void loadAllRepos_shouldInvokeReposCallback() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
