@@ -11,7 +11,7 @@ Android app that allows the user to search for GitHub repos by a given user name
 1. [Caching strategy:](https://github.com/AnDevCba/GitHubMVP/pull/5/files) clean-up and refactor the caching strategy.
 2. [Create Interactors:](https://github.com/AnDevCba/GitHubMVP/pull/8/files) clean-up and refactor for adding new Interactors. You will find the interactors to search repos by username, to save repos to the cache and to load repos from the cache.
 3. [Adapter pattern for Repository and Interactor:](https://github.com/AnDevCba/GitHubMVP/pull/18/files) add Adapter pattern for Repository and Interactor components, so, the subclasses can override the desired methods.
-3. [Refactor Unit Tests:](https://github.com/AnDevCba/GitHubMVP/pull/20/files) Simplified interactor unit tests and add common jargon.
+4. [Refactor Unit Tests:](https://github.com/AnDevCba/GitHubMVP/pull/20/files) Simplified interactor unit tests and add common jargon.
 
 
 ## Testing PRs
@@ -24,3 +24,4 @@ Android app that allows the user to search for GitHub repos by a given user name
 7. [Unit Testing - Add repos presenter:](https://github.com/AnDevCba/GitHubMVP/pull/15/files) add Unit Tests for AddReposPresenter component.
 8. [Unit Testing - Repos presenter:](https://github.com/AnDevCba/GitHubMVP/pull/16/files) add Unit Tests for ReposPresenter component.
 9. [Unit Testing - Repos by username UI model:](https://github.com/AnDevCba/GitHubMVP/pull/17/files) add Unit Tests for ReposByUsernameUI model.
+10. [UI Testing using Espresso Test Recorder:](https://github.com/AnDevCba/GitHubMVP/pull/21/files) add UI Tests using Espresso Test Recorder.
