@@ -34,6 +34,7 @@ public class ReposCacheTest {
 
     private static TreeMap<String, List<Repo>> REPOS_BY_USERNAME = new TreeMap<>();
 
+    // System Under Test (SUT)
     private ReposCacheImpl reposCache;
 
     @Before
@@ -63,13 +64,14 @@ public class ReposCacheTest {
         reposCache.put(USERNAME, REPO_LIST);
 
         // Then
+        // Expected, Actual
         assertTrue(!reposCache.cachedRepos.isEmpty());
-        assertEquals(reposCache.cachedRepos.size(), 1);
-        assertEquals(reposCache.cachedRepos.get(USERNAME).size(), 2);
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(0).getName(), "repo1");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(0).getUrl(), "url1");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(1).getName(), "repo2");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(1).getUrl(), "url2");
+        assertEquals(1, reposCache.cachedRepos.size());
+        assertEquals(2, reposCache.cachedRepos.get(USERNAME).size());
+        assertEquals("repo1", reposCache.cachedRepos.get(USERNAME).get(0).getName());
+        assertEquals("url1", reposCache.cachedRepos.get(USERNAME).get(0).getUrl());
+        assertEquals("repo2", reposCache.cachedRepos.get(USERNAME).get(1).getName());
+        assertEquals("url2", reposCache.cachedRepos.get(USERNAME).get(1).getUrl());
     }
 
     @Test
@@ -82,9 +84,9 @@ public class ReposCacheTest {
 
         // Then
         assertTrue(!repos.isEmpty());
-        assertEquals(repos.size(), 2);
-        assertEquals(repos.get(0), REPO1);
-        assertEquals(repos.get(1), REPO2);
+        assertEquals(2, repos.size());
+        assertEquals(REPO1, repos.get(0));
+        assertEquals(REPO2, repos.get(1));
     }
 
     @Test
@@ -109,9 +111,9 @@ public class ReposCacheTest {
 
         // Then
         assertTrue(!reposByUsername.isEmpty());
-        assertEquals(reposByUsername.size(), 1);
-        assertEquals(reposByUsername.firstKey(), USERNAME);
-        assertEquals(reposByUsername.get(USERNAME), REPO_LIST);
+        assertEquals(1, reposByUsername.size());
+        assertEquals(USERNAME, reposByUsername.firstKey());
+        assertEquals(REPO_LIST, reposByUsername.get(USERNAME));
     }
 
     @Test
