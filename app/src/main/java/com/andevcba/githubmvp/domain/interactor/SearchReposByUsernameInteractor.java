@@ -1,8 +1,8 @@
 package com.andevcba.githubmvp.domain.interactor;
 
 import com.andevcba.githubmvp.data.DependencyProvider;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
 
@@ -11,7 +11,7 @@ import com.andevcba.githubmvp.data.repository.RepositoryFactory;
  *
  * @author lucas.nobile
  */
-public class SearchReposByUsernameInteractor implements Interactor {
+public class SearchReposByUsernameInteractor extends InteractorAdapter {
 
     private String username;
     private RepositoryFactory factory;

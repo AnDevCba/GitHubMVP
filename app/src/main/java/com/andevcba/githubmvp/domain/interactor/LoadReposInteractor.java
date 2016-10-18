@@ -1,8 +1,8 @@
 package com.andevcba.githubmvp.domain.interactor;
 
 import com.andevcba.githubmvp.data.DependencyProvider;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.repository.Repository;
 
 /**
@@ -10,7 +10,7 @@ import com.andevcba.githubmvp.data.repository.Repository;
  *
  * @author lucas.nobile
  */
-public class LoadReposInteractor implements Interactor {
+public class LoadReposInteractor extends InteractorAdapter {
 
     private Repository repository;
 

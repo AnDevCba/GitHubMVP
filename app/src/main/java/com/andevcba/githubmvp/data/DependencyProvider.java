@@ -1,9 +1,9 @@
 package com.andevcba.githubmvp.data;
 
+import com.andevcba.githubmvp.data.cache.ReposCache;
+import com.andevcba.githubmvp.data.cache.ReposCacheImpl;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCacheImpl;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;

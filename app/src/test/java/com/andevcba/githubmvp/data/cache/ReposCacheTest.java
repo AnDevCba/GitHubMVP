@@ -1,4 +1,6 @@
-package com.andevcba.githubmvp.data.repository;
+package com.andevcba.githubmvp.data.cache;
+
+import com.andevcba.githubmvp.data.model.Repo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +10,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.data.model.Repo;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;

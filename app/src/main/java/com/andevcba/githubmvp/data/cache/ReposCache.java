@@ -1,9 +1,9 @@
-package com.andevcba.githubmvp.data.repository;
+package com.andevcba.githubmvp.data.cache;
+
+import com.andevcba.githubmvp.data.model.Repo;
 
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.data.model.Repo;
 
 /**
  * Represents a cache for Repos.

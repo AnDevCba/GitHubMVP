@@ -1,13 +1,13 @@
 package com.andevcba.githubmvp.domain.interactor;
 
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.data.net.MockGitHubApiClient;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
 import com.andevcba.githubmvp.data.repository.NetworkRepository;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
 
