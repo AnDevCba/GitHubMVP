@@ -188,10 +188,6 @@ public class AddReposPresenterTest {
         // When
         presenter.saveReposByUsername();
 
-        // Callback is captured and invoked with stubbed repos by username
-        verify(saveReposInteractor).execute(reposCallbackArgumentCaptor.capture());
-        reposCallbackArgumentCaptor.getValue().onResponse(model);
-
         // Then
         verify(view).navigateToReposScreen();
     }
