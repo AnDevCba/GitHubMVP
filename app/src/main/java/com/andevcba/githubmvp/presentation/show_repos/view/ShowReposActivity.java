@@ -40,7 +40,7 @@ public class ShowReposActivity extends AppCompatActivity {
     private void initFragment(Fragment showReposFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, showReposFragment);
+        transaction.replace(R.id.container, showReposFragment,"showReposFragment");
         transaction.commit();
     }
 }

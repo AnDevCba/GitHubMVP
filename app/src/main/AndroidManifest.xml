@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.add_repos.AddReposActivity" />
-
+        <instrumentation
+            android:name="android.test.InstrumentationTestRunner"
+            android:targetPackage="com.matrix.edc.client.android" />
     </application>
 </manifest>
