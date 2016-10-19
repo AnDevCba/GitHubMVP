@@ -42,12 +42,6 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.ext.retrofitVersion"
-<<<<<<< HEAD
-    testCompile "com.jayway.android.robotium:robotium:$rootProject.ext.robotiumVersion"
-    testCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
-    testCompile "com.android.support.test:rules:$rootProject.ext.testRulesVersion"
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-=======
 
     // Android Testing Support Library's dependencies
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
@@ -55,5 +49,8 @@ dependencies {
 
     // UI Testing dependencies
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
->>>>>>> origin/master
+    testCompile "com.jayway.android.robotium:robotium:$rootProject.ext.robotiumVersion"
+    testCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
+    testCompile "com.android.support.test:rules:$rootProject.ext.testRulesVersion"
+
 }
