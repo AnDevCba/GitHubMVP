@@ -1,9 +1,7 @@
 package com.andevcba.githubmvp.presentation.add_repos;
 
-import java.util.List;
-
+import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
-import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 
 /**
  * Contract between {@link AddReposFragment} view and {@link AddReposPresenter}.
@@ -13,9 +11,10 @@ import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 public interface AddReposContract {
 
     interface View {
+
         void showEmptyUsernameError();
 
-        void showRepos(List<ViewType> repos);
+        void showRepos(ReposByUsernameUI reposByUsernameUI);
 
         void showSaveReposButton(boolean show);
 
@@ -25,16 +24,17 @@ public interface AddReposContract {
 
         void hideSoftKeyboard();
 
-        void goToShowReposScreen();
+        void navigateToReposScreen();
 
-        void showGitHubUsernamePage(String url);
+        void browseGitHubUsernamePage(String url);
 
-        void showGitHubRepoPage(String url);
+        void browseGitHubRepoPage(String url);
 
         void showReposAlreadySaved();
     }
 
     interface Presenter {
+
         void searchReposByUsername(String username);
 
         void saveReposByUsername();
@@ -43,8 +43,12 @@ public interface AddReposContract {
 
         void goToGitHubRepoPage(String url);
 
-        ReposByUsernameUI getReposByUsernameUI();
+        void restoreStateAndShowRepos(ReposByUsernameUI data);
 
-        void restoreStateAndShowReposByUsername(ReposByUsernameUI reposByUsername);
+        ReposByUsernameUI transformModelToUiModel(ReposByUsername data);
+
+        ReposByUsername transformUiModelToModel(ReposByUsernameUI data);
+
+        ReposByUsernameUI getUiModel();
     }
 }

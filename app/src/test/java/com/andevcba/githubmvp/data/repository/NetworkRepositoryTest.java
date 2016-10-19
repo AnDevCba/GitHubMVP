@@ -1,5 +1,13 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.model.ErrorResponse;
+import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
+import com.andevcba.githubmvp.data.model.Repo;
+import com.andevcba.githubmvp.data.net.GitHubApiClient;
+import com.andevcba.githubmvp.data.net.MockFailureResponseGitHubApiClient;
+import com.andevcba.githubmvp.data.net.MockGitHubApiClient;
+import com.andevcba.githubmvp.data.net.MockNotFoundResponseGitHubApiClient;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +16,6 @@ import org.mockito.MockitoAnnotations;
 import java.io.IOException;
 import java.util.List;
 
-import com.andevcba.githubmvp.data.model.ErrorResponse;
-import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
-import com.andevcba.githubmvp.data.model.Repo;
-import com.andevcba.githubmvp.data.net.GitHubApiClient;
-import com.andevcba.githubmvp.data.net.MockFailureResponseGitHubApiClient;
-import com.andevcba.githubmvp.data.net.MockGitHubApiClient;
-import com.andevcba.githubmvp.data.net.MockNotFoundResponseGitHubApiClient;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -62,11 +63,11 @@ public class NetworkRepositoryTest {
 
         // Then
         assertTrue(response.isSuccessful());
-        assertEquals(response.body().size(), 2);
-        assertEquals(response.body().get(0).getName(), "repo1");
-        assertEquals(response.body().get(0).getUrl(), "url1");
-        assertEquals(response.body().get(1).getName(), "repo2");
-        assertEquals(response.body().get(1).getUrl(), "url2");
+        assertEquals(2, response.body().size());
+        assertEquals("repo1", response.body().get(0).getName());
+        assertEquals("url1", response.body().get(0).getUrl());
+        assertEquals("repo2", response.body().get(1).getName());
+        assertEquals("url2", response.body().get(1).getUrl());
     }
 
     @Test
@@ -81,8 +82,8 @@ public class NetworkRepositoryTest {
 
         // Then
         assertFalse(response.isSuccessful());
-        assertEquals(errorResponse.getCode(), 404);
-        assertEquals(errorResponse.getMessage(), "Not Found");
+        assertEquals(404, errorResponse.getCode());
+        assertEquals("Not Found", errorResponse.getMessage());
     }
 
     @Test(expected = IOException.class)

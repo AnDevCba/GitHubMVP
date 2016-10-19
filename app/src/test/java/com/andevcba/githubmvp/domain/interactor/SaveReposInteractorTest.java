@@ -3,8 +3,6 @@ package com.andevcba.githubmvp.domain.interactor;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -29,8 +24,6 @@ import static org.mockito.Mockito.verify;
 public class SaveReposInteractorTest {
 
     private final static String USERNAME = "AnDevCba";
-    private final static String NOT_IN_CACHE_USERNAME = "NotInCache";
-
     private final static Repo REPO1 = new Repo("repo1", "url1");
     private final static Repo REPO2 = new Repo("repo2", "url2");
     private static List<Repo> REPO_LIST = new ArrayList<>();
@@ -39,12 +32,6 @@ public class SaveReposInteractorTest {
     private static ReposByUsername reposByUsername;
 
     @Mock
-    private ReposCallback reposCallback;
-
-    @Mock
-    private ReposCache reposCache;
-
-    @InjectMocks
     private InMemoryRepository repository;
 
     @InjectMocks
@@ -68,9 +55,10 @@ public class SaveReposInteractorTest {
     @Test
     public void execute_shouldSaveReposByUsername() {
         // When
-        repository.saveReposByUsername(reposByUsername);
+        interactor.setReposByUsername(reposByUsername);
+        interactor.execute();
 
         // Then
-        verify(reposCache, times(1)).put(USERNAME, REPO_LIST);
+        verify(repository).saveReposByUsername(reposByUsername);
     }
 }

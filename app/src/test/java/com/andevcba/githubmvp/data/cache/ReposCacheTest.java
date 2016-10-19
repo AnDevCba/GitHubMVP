@@ -1,4 +1,6 @@
-package com.andevcba.githubmvp.data.repository;
+package com.andevcba.githubmvp.data.cache;
+
+import com.andevcba.githubmvp.data.model.Repo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +10,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.data.model.Repo;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -34,6 +34,7 @@ public class ReposCacheTest {
 
     private static TreeMap<String, List<Repo>> REPOS_BY_USERNAME = new TreeMap<>();
 
+    // System Under Test (SUT)
     private ReposCacheImpl reposCache;
 
     @Before
@@ -42,11 +43,11 @@ public class ReposCacheTest {
 
         reposCache = new ReposCacheImpl();
 
-        // Mocked repo list
+        // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
 
-        // Mocked repos by username
+        // Stubbed repos by username
         REPOS_BY_USERNAME.put(USERNAME, REPO_LIST);
     }
 
@@ -57,24 +58,25 @@ public class ReposCacheTest {
 
     @Test
     public void put_shouldSaveUsernameAndListOfRepos() {
-        // Given (pre-condition(s)) a mocked username and repo list
+        // Given (pre-condition(s)) a stubbed username and repo list
 
         // When
         reposCache.put(USERNAME, REPO_LIST);
 
         // Then
+        // Expected, Actual
         assertTrue(!reposCache.cachedRepos.isEmpty());
-        assertEquals(reposCache.cachedRepos.size(), 1);
-        assertEquals(reposCache.cachedRepos.get(USERNAME).size(), 2);
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(0).getName(), "repo1");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(0).getUrl(), "url1");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(1).getName(), "repo2");
-        assertEquals(reposCache.cachedRepos.get(USERNAME).get(1).getUrl(), "url2");
+        assertEquals(1, reposCache.cachedRepos.size());
+        assertEquals(2, reposCache.cachedRepos.get(USERNAME).size());
+        assertEquals("repo1", reposCache.cachedRepos.get(USERNAME).get(0).getName());
+        assertEquals("url1", reposCache.cachedRepos.get(USERNAME).get(0).getUrl());
+        assertEquals("repo2", reposCache.cachedRepos.get(USERNAME).get(1).getName());
+        assertEquals("url2", reposCache.cachedRepos.get(USERNAME).get(1).getUrl());
     }
 
     @Test
     public void get_by_username_in_cache_shouldReturnAListOfRepos() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -82,14 +84,14 @@ public class ReposCacheTest {
 
         // Then
         assertTrue(!repos.isEmpty());
-        assertEquals(repos.size(), 2);
-        assertEquals(repos.get(0), REPO1);
-        assertEquals(repos.get(1), REPO2);
+        assertEquals(2, repos.size());
+        assertEquals(REPO1, repos.get(0));
+        assertEquals(REPO2, repos.get(1));
     }
 
     @Test
     public void get_by_username_not_in_cache_shouldReturnNull() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -101,7 +103,7 @@ public class ReposCacheTest {
 
     @Test
     public void getAll_shouldReturnAMapOfReposByUsername() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -109,14 +111,14 @@ public class ReposCacheTest {
 
         // Then
         assertTrue(!reposByUsername.isEmpty());
-        assertEquals(reposByUsername.size(), 1);
-        assertEquals(reposByUsername.firstKey(), USERNAME);
-        assertEquals(reposByUsername.get(USERNAME), REPO_LIST);
+        assertEquals(1, reposByUsername.size());
+        assertEquals(USERNAME, reposByUsername.firstKey());
+        assertEquals(REPO_LIST, reposByUsername.get(USERNAME));
     }
 
     @Test
     public void isCached_shouldReturnTrueIfUsernameIsInCache() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When
@@ -128,7 +130,7 @@ public class ReposCacheTest {
 
     @Test
     public void isCached_shouldReturnFalseIfUsernameIsNotInCache() {
-        // Given a cache with repos by username
+        // Given a stubbed cache with repos by username
         reposCache.put(USERNAME, REPO_LIST);
 
         // When

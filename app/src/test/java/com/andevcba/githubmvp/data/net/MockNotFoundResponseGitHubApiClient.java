@@ -1,11 +1,11 @@
 package com.andevcba.githubmvp.data.net;
 
+import com.andevcba.githubmvp.data.model.ErrorResponse;
+import com.andevcba.githubmvp.data.model.Repo;
 import com.google.gson.Gson;
 
 import java.util.List;
 
-import com.andevcba.githubmvp.data.model.ErrorResponse;
-import com.andevcba.githubmvp.data.model.Repo;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -20,7 +20,6 @@ import retrofit2.mock.Calls;
  * @author lucas.nobile
  */
 public class MockNotFoundResponseGitHubApiClient implements GitHubApiClient {
-
 
     private final BehaviorDelegate<GitHubApiClient> delegate;
 

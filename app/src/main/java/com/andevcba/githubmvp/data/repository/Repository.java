@@ -16,6 +16,7 @@
 
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 

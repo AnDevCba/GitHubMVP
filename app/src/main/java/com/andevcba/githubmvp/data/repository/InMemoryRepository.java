@@ -16,18 +16,20 @@
 
 package com.andevcba.githubmvp.data.repository;
 
-import java.util.List;
-import java.util.TreeMap;
-
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
+
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Concrete implementation to load {@link Repo}s from memory.
  *
  * @author lucas.nobile
  */
-public class InMemoryRepository implements Repository {
+public class InMemoryRepository extends RepositoryAdapter {
 
     private ReposCache reposCache;
 

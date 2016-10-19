@@ -1,6 +1,7 @@
 package com.andevcba.githubmvp.data.repository;
 
 import com.andevcba.githubmvp.data.DependencyProvider;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 
 /**
  * Creates a concrete {@link Repository} by a given username;

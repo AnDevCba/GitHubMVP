@@ -1,11 +1,11 @@
-package com.andevcba.githubmvp.data.repository;
+package com.andevcba.githubmvp.data.cache;
 
 import android.support.annotation.VisibleForTesting;
 
+import com.andevcba.githubmvp.data.model.Repo;
+
 import java.util.List;
 import java.util.TreeMap;
-
-import com.andevcba.githubmvp.data.model.Repo;
 
 /**
  * {@link ReposCache} implementation.

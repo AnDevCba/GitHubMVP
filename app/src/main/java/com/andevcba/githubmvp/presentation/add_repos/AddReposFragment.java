@@ -18,18 +18,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.data.DependencyProvider;
+import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
+import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
+import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposAdapter;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
+import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.andevcba.githubmvp.R;
-import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
-import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
-import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
-import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposAdapter;
-import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
-import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 
 /**
  * Allows the user to search for repos by username and shows repos if any.
@@ -38,18 +38,18 @@ import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
  */
 public class AddReposFragment extends Fragment implements AddReposContract.View {
 
-    private static final String KEY_REPOS_BY_USERNAME = "repos_by_username";
+    private static final String KEY_UI_MODEL = "ui_model";
 
     private AddReposContract.Presenter presenter;
 
-    private ShowReposAdapter adapter;
+    private ReposAdapter adapter;
 
     private EditText tvUsername;
     private ProgressBar progressBar;
     private RecyclerView rvShowRepos;
     private FloatingActionButton fab;
 
-    private ShowReposFragment.OnItemSelectedListener itemSelectedListener = new ShowReposFragment.OnItemSelectedListener() {
+    private ReposFragment.OnItemSelectedListener itemSelectedListener = new ReposFragment.OnItemSelectedListener() {
         @Override
         public void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI) {
             presenter.goToGitHubUsernamePage(stickyHeaderUI.getName());
@@ -69,8 +69,8 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new AddReposPresenter(this);
-        adapter = new ShowReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
+        presenter = new AddReposPresenter(DependencyProvider.provideSearchReposByUsernameInteractor(), DependencyProvider.provideSaveReposInteractor(), this);
+        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
     }
 
     @Nullable
@@ -129,15 +129,15 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            ReposByUsernameUI reposByUsernameUI = savedInstanceState.getParcelable(KEY_REPOS_BY_USERNAME);
-            presenter.restoreStateAndShowReposByUsername(reposByUsernameUI);
+            ReposByUsernameUI uiModel = savedInstanceState.getParcelable(KEY_UI_MODEL);
+            presenter.restoreStateAndShowRepos(uiModel);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_REPOS_BY_USERNAME, presenter.getReposByUsernameUI());
+        outState.putParcelable(KEY_UI_MODEL, presenter.getUiModel());
     }
 
     @Override
@@ -146,7 +146,8 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     }
 
     @Override
-    public void showRepos(List<ViewType> repos) {
+    public void showRepos(ReposByUsernameUI reposByUsernameUI) {
+        List<ViewType> repos = reposByUsernameUI.getViewTypes();
         rvShowRepos.setVisibility(View.VISIBLE);
         adapter.addAll(repos);
     }
@@ -181,19 +182,19 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         }
     }
 
-    public void goToShowReposScreen() {
+    public void navigateToReposScreen() {
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 
     @Override
-    public void showGitHubUsernamePage(String url) {
+    public void browseGitHubUsernamePage(String url) {
         Uri uri = Uri.parse(url);
         browse(uri);
     }
 
     @Override
-    public void showGitHubRepoPage(String url) {
+    public void browseGitHubRepoPage(String url) {
         Uri uri = Uri.parse(url);
         browse(uri);
     }

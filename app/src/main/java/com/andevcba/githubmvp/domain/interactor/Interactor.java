@@ -1,5 +1,7 @@
 package com.andevcba.githubmvp.domain.interactor;
 
+import com.andevcba.githubmvp.data.ReposCallback;
+
 /**
  * Base interactor.
  *
@@ -8,4 +10,6 @@ package com.andevcba.githubmvp.domain.interactor;
 public interface Interactor {
 
     void execute();
+
+    void execute(ReposCallback callback);
 }

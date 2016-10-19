@@ -1,8 +1,8 @@
 package com.andevcba.githubmvp.domain.interactor;
 
 import com.andevcba.githubmvp.data.DependencyProvider;
-import com.andevcba.githubmvp.data.repository.ReposCache;
-import com.andevcba.githubmvp.data.repository.ReposCallback;
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.repository.Repository;
 
 /**
@@ -10,19 +10,17 @@ import com.andevcba.githubmvp.data.repository.Repository;
  *
  * @author lucas.nobile
  */
-public class LoadReposInteractor implements Interactor {
+public class LoadReposInteractor extends InteractorAdapter {
 
-    private ReposCallback callback;
     private Repository repository;
 
-    public LoadReposInteractor(ReposCallback callback) {
-        this.callback = callback;
+    public LoadReposInteractor() {
         ReposCache reposCache = DependencyProvider.provideReposCache();
         repository = DependencyProvider.provideInMemoryRepository(reposCache);
     }
 
     @Override
-    public void execute() {
+    public void execute(ReposCallback callback) {
         repository.loadAllRepos(callback);
     }
 }

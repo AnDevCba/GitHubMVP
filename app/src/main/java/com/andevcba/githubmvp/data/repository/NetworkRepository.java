@@ -1,13 +1,15 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
+import com.andevcba.githubmvp.data.model.ErrorResponse;
+import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
+import com.andevcba.githubmvp.data.model.Repo;
+import com.andevcba.githubmvp.data.model.ReposByUsername;
+import com.andevcba.githubmvp.data.net.GitHubApiClient;
+
 import java.util.List;
 import java.util.TreeMap;
 
-import com.andevcba.githubmvp.data.model.ErrorResponse;
-import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
-import com.andevcba.githubmvp.data.model.ReposByUsername;
-import com.andevcba.githubmvp.data.net.GitHubApiClient;
-import com.andevcba.githubmvp.data.model.Repo;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -16,7 +18,7 @@ import retrofit2.Response;
  *
  * @author lucas.nobile
  */
-public class NetworkRepository implements Repository {
+public class NetworkRepository extends RepositoryAdapter {
 
     private GitHubApiClient gitHubApiClient;
 
@@ -50,15 +52,5 @@ public class NetworkRepository implements Repository {
                 callback.onError(t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void saveReposByUsername(ReposByUsername reposByUsername) {
-        throw new UnsupportedOperationException("Invalid operation!");
-    }
-
-    @Override
-    public void loadAllRepos(ReposCallback callback) {
-        throw new UnsupportedOperationException("Invalid operation!");
     }
 }
