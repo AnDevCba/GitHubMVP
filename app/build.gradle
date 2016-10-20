@@ -45,8 +45,8 @@ dependencies {
 
     // Android Testing Support Library's dependencies
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.testRulesVersion"
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.supportLibraryTestVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.supportLibraryTestVersion"
 
     // UI Testing dependencies
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
