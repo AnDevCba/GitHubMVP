@@ -97,7 +97,7 @@ public class ReposFragment extends Fragment implements ReposContract.View {
     private void setUpFloatingActionButton() {
         // Set up floating action button
         FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_save_repos);
+                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_repos);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

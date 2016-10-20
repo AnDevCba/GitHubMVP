@@ -24,7 +24,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     // App dependencies
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
@@ -46,8 +45,11 @@ dependencies {
 
     // Android Testing Support Library's dependencies
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.supportLibraryTestVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.supportLibraryTestVersion"
 
     // UI Testing dependencies
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
+
 }

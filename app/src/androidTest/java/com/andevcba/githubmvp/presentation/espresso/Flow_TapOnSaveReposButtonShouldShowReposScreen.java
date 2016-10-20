@@ -40,7 +40,7 @@ public class Flow_TapOnSaveReposButtonShouldShowReposScreen {
     @Test
     public void tapOnSaveReposButtonShouldShowReposScreen() {
         ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.fab_save_repos),
+                allOf(withId(R.id.fab_add_repos),
                         withParent(withId(R.id.coordinatorLayout)),
                         isDisplayed()));
         floatingActionButton.perform(click());

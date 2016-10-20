@@ -21,7 +21,7 @@ public class ReposActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_repos);
+        setContentView(R.layout.activity_repos);
 
         setUpToolbar();
 
