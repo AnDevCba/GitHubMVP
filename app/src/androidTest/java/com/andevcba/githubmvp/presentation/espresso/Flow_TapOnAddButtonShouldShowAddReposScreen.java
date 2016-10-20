@@ -30,7 +30,7 @@ public class Flow_TapOnAddButtonShouldShowAddReposScreen {
 
     @Test
     public void tapOnAddButtonShouldShowAddReposScreen() {
-        ViewInteraction floatingActionButton = onView(allOf(withId(R.id.fab_save_repos), withParent(withId(R.id.coordinatorLayout)), isDisplayed()));
+        ViewInteraction floatingActionButton = onView(allOf(withId(R.id.fab_add_repos), withParent(withId(R.id.coordinatorLayout)), isDisplayed()));
         floatingActionButton.perform(click());
 
         ViewInteraction editText = onView(allOf(withId(R.id.tv_username), withText(R.string.enter_username_hint), isDisplayed()));

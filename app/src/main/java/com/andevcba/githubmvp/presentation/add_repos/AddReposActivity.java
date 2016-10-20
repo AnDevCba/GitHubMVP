@@ -18,6 +18,8 @@ import com.andevcba.githubmvp.R;
  */
 public class AddReposActivity extends AppCompatActivity {
 
+    public static final String TAG = AddReposActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
