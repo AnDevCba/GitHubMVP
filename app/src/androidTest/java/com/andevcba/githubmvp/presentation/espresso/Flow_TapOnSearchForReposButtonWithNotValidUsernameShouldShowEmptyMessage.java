@@ -1,4 +1,4 @@
-package com.andevcba.githubmvp.presentation.show_repos.view;
+package com.andevcba.githubmvp.presentation.espresso;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

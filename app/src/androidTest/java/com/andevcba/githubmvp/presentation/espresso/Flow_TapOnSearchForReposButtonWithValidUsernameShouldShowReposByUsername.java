@@ -1,4 +1,4 @@
-package com.andevcba.githubmvp.presentation.show_repos.view;
+package com.andevcba.githubmvp.presentation.espresso;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +33,13 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class Flow_TapOnSaveReposButtonShouldShowReposScreen {
+public class Flow_TapOnSearchForReposButtonWithValidUsernameShouldShowReposByUsername {
 
     @Rule
     public ActivityTestRule<ReposActivity> mActivityTestRule = new ActivityTestRule<>(ReposActivity.class);
 
     @Test
-    public void tapOnSaveReposButtonShouldShowReposScreen() {
+    public void tapOnSearchForReposButtonWithValidUsernameShouldShowReposByUsername() {
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab_save_repos),
                         withParent(withId(R.id.coordinatorLayout)),
@@ -62,11 +64,16 @@ public class Flow_TapOnSaveReposButtonShouldShowReposScreen {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction floatingActionButton2 = onView(
-                allOf(withId(R.id.fab_save_repos),
-                        withParent(withId(R.id.coordinatorLayout)),
+        ViewInteraction editText = onView(
+                allOf(withId(R.id.tv_username), withText("AnDevCba"),
+                        childAtPosition(
+                                allOf(withId(R.id.search_repos_container),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
+                                                0)),
+                                1),
                         isDisplayed()));
-        floatingActionButton2.perform(click());
+        editText.check(matches(withText("AnDevCba")));
 
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
