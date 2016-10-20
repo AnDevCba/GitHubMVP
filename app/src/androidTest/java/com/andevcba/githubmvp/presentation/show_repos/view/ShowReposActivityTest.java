@@ -41,14 +41,13 @@ public class ShowReposActivityTest {
     }
 
     @Test
-    public void searchRepos() throws Exception{
+    public void testSearchRepos() throws Exception{
         //Unlock the lock screen
         solo.unlockScreen();
         //Click on action menu item add
-        solo.clickOnButton("+");
-        solo.assertCurrentActivity("wrong activity", ShowReposActivity.class);
+//        solo.clickOnButton("+");
         solo.enterText(0, "lucaslabs");
-        solo.clickOnButton("SEARCH FOR REPOS");
+        solo.clickOnView(solo.getView(com.andevcba.githubmvp.R.id.btn_search_repos));
         assertTrue(solo.searchText("android101"));
     }
 

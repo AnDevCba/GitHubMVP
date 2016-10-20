@@ -46,11 +46,10 @@ dependencies {
     // Android Testing Support Library's dependencies
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.testRulesVersion"
 
     // UI Testing dependencies
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    testCompile "com.jayway.android.robotium:robotium:$rootProject.ext.robotiumVersion"
-    testCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
-    testCompile "com.android.support.test:rules:$rootProject.ext.testRulesVersion"
+    androidTestCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
 
 }
