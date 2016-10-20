@@ -1,4 +1,4 @@
-package com.andevcba.githubmvp.presentation.show_repos.view;
+package com.andevcba.githubmvp.presentation.espresso;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.presentation.show_repos.view.ReposActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
