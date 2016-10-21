@@ -1,7 +1,7 @@
 package com.andevcba.githubmvp.domain.interactor;
 
 import com.andevcba.githubmvp.data.ReposCallback;
-import com.andevcba.githubmvp.data.cache.ReposCacheImpl;
+import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
 import com.andevcba.githubmvp.data.repository.NetworkRepository;
@@ -40,7 +40,7 @@ public class SearchReposByUsernameInteractorTest {
     private ReposCallback reposCallback;
 
     @Mock
-    private ReposCacheImpl reposCache;
+    private ReposCache reposCache;
 
     @InjectMocks
     private RepositoryFactory repositoryFactory;
@@ -63,8 +63,7 @@ public class SearchReposByUsernameInteractorTest {
         // Given a stubbed repos cache with username not in cache
 
         // When
-        interactor.setUsername(NOT_IN_CACHE_USERNAME);
-        interactor.execute(reposCallback);
+        interactor.execute(NOT_IN_CACHE_USERNAME, reposCallback);
 
         // Then
         assertThat(repositoryFactory.create(NOT_IN_CACHE_USERNAME), instanceOf(NetworkRepository.class));
@@ -79,8 +78,7 @@ public class SearchReposByUsernameInteractorTest {
 
         // When
         when(reposCache.isCached(USERNAME)).thenReturn(true);
-        interactor.setUsername(USERNAME);
-        interactor.execute(reposCallback);
+        interactor.execute(USERNAME, reposCallback);
 
         // Then
         assertThat(repositoryFactory.create(USERNAME), instanceOf(InMemoryRepository.class));

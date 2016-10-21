@@ -4,7 +4,6 @@ import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.cache.ReposCacheImpl;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
-import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
@@ -20,16 +19,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class DependencyProvider {
 
-    private static ReposCache reposCache;
+    private static ReposCacheImpl reposCache;
     private static Retrofit retrofit;
     private static GitHubApiClient gitHubApiClient;
     private static RepositoryFactory repositoryFactory;
-    private static Repository inMemoryRepository;
+    private static InMemoryRepository inMemoryRepository;
     private static SearchReposByUsernameInteractor searchReposByUsernameInteractor;
     private static SaveReposInteractor saveReposInteractor;
     private static LoadReposInteractor loadReposInteractor;
 
-    public static ReposCache provideReposCache() {
+    public static ReposCacheImpl provideReposCache() {
         if (reposCache == null) {
             reposCache = new ReposCacheImpl();
         }
@@ -67,7 +66,7 @@ public class DependencyProvider {
         return repositoryFactory;
     }
 
-    public static Repository provideInMemoryRepository(ReposCache reposCache) {
+    public static InMemoryRepository provideInMemoryRepository(ReposCache reposCache) {
         if (inMemoryRepository == null) {
             inMemoryRepository = new InMemoryRepository(reposCache);
         }

@@ -4,6 +4,7 @@ import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
+import com.andevcba.githubmvp.domain.interactor.Interactor;
 import com.andevcba.githubmvp.domain.interactor.SaveReposInteractor;
 import com.andevcba.githubmvp.domain.interactor.SearchReposByUsernameInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
@@ -23,8 +24,8 @@ import java.util.TreeMap;
  */
 public class AddReposPresenter implements AddReposContract.Presenter, ReposCallback {
 
-    private SearchReposByUsernameInteractor searchReposInteractor;
-    private SaveReposInteractor saveReposInteractor;
+    private Interactor searchReposInteractor;
+    private Interactor saveReposInteractor;
     private AddReposContract.View view;
     private ReposByUsername model;
     private ReposByUsernameUI uiModel;
@@ -44,8 +45,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
             view.showProgressBar(true);
 
             String formattedUsername = username.toLowerCase().trim();
-            searchReposInteractor.setUsername(formattedUsername);
-            searchReposInteractor.execute(this);
+            searchReposInteractor.execute(formattedUsername, this);
         }
     }
 
@@ -75,8 +75,7 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
     @Override
     public void saveReposByUsername() {
-        saveReposInteractor.setReposByUsername(model);
-        saveReposInteractor.execute();
+        saveReposInteractor.execute(model);
 
         view.navigateToReposScreen();
     }

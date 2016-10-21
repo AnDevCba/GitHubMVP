@@ -2,7 +2,7 @@ package com.andevcba.githubmvp.domain.interactor;
 
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
-import com.andevcba.githubmvp.data.repository.InMemoryRepository;
+import com.andevcba.githubmvp.data.repository.Repository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class SaveReposInteractorTest {
     private static ReposByUsername reposByUsername;
 
     @Mock
-    private InMemoryRepository repository;
+    private Repository repository;
 
     @InjectMocks
     private SaveReposInteractor interactor;
@@ -55,8 +55,7 @@ public class SaveReposInteractorTest {
     @Test
     public void execute_shouldSaveReposByUsername() {
         // When
-        interactor.setReposByUsername(reposByUsername);
-        interactor.execute();
+        interactor.execute(reposByUsername);
 
         // Then
         verify(repository).saveReposByUsername(reposByUsername);

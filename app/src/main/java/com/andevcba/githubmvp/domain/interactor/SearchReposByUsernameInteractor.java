@@ -13,7 +13,6 @@ import com.andevcba.githubmvp.data.repository.RepositoryFactory;
  */
 public class SearchReposByUsernameInteractor extends InteractorAdapter {
 
-    private String username;
     private RepositoryFactory factory;
 
     public SearchReposByUsernameInteractor() {
@@ -21,16 +20,8 @@ public class SearchReposByUsernameInteractor extends InteractorAdapter {
         factory = DependencyProvider.provideRepositoryFactory(reposCache);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
-    public void execute(ReposCallback callback) {
+    public void execute(String username, ReposCallback callback) {
         Repository repository = factory.create(username);
         repository.searchReposByUsername(username, callback);
     }
