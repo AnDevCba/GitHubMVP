@@ -9,5 +9,5 @@ Android app that allows the user to search for GitHub repos by a given username.
 3. [Presentation layer:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/main/java/com/andevcba/githubmvp/presentation) Here lives the Model-View-Presenter (MVP) pattern, where the `View` is an Activity or a Fragment, the `Model` is a UI model and the `Presenter` is the man-in-the-middle that handles user actions from the `View`, then consumes data through `Interactor`s and finally passes the data to be rendered to the `View`.
 
 ## Testing
-1. [Unit Testing:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/test) Unit Tests that run on the JVM, using JUnit and Mockito frameworks.
-2. [UI Testing:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/androidTest) UI Tests that runs on an Emulator or a device, using Robotium and Espresso frameworks.
+1. [Unit Testing:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/test/java/com/andevcba/githubmvp) Unit Tests that run on the JVM, using JUnit and Mockito frameworks.
+2. [UI Testing:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/androidTest/java/com/andevcba/githubmvp/presentation) UI Tests that runs on an Emulator or a device, using Robotium and Espresso frameworks.
