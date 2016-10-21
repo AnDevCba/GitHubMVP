@@ -4,6 +4,7 @@ import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
+import com.andevcba.githubmvp.domain.interactor.Interactor;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
 import com.andevcba.githubmvp.presentation.show_repos.ReposContract;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
@@ -25,7 +26,7 @@ import java.util.TreeMap;
 public class ReposPresenter implements ReposContract.Presenter, ReposCallback {
 
     private final ReposContract.View view;
-    private LoadReposInteractor loadReposInteractor;
+    private Interactor loadReposInteractor;
     private ReposByUsernameUI uiModel;
 
     public ReposPresenter(LoadReposInteractor loadReposInteractor, ReposContract.View view) {

@@ -3,22 +3,20 @@ package com.andevcba.githubmvp.presentation.show_repos.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 
 /**
- * UI model of {@link com.andevcba.githubmvp.data.model.Repo}.
+ * UI model of a Repo.
  * Parcelable data to transfer between fragments and to save/restore on orientation changes.
  *
  * @author lucas.nobile
  */
-public class RepoUI extends Repo implements ViewType, Parcelable {
+public class RepoUI implements ViewType, Parcelable {
 
     private String name;
     private String url;
 
     public RepoUI(String name, String url) {
-        super(name, url);
         this.name = name;
         this.url = url;
     }
@@ -31,6 +29,15 @@ public class RepoUI extends Repo implements ViewType, Parcelable {
     @Override
     public int getType() {
         return REPO_ITEM;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.andevcba.githubmvp.data.repository.Repository;
  */
 public class SaveReposInteractor extends InteractorAdapter {
 
-    private ReposByUsername reposByUsername;
     private Repository repository;
 
     public SaveReposInteractor() {
@@ -20,12 +19,8 @@ public class SaveReposInteractor extends InteractorAdapter {
         repository = DependencyProvider.provideInMemoryRepository(reposCache);
     }
 
-    public void setReposByUsername(ReposByUsername reposByUsername) {
-        this.reposByUsername = reposByUsername;
-    }
-
     @Override
-    public void execute() {
+    public void execute(ReposByUsername reposByUsername) {
         repository.saveReposByUsername(reposByUsername);
     }
 }

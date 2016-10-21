@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -35,9 +36,9 @@ import static org.mockito.Mockito.verify;
 public class AddReposPresenterTest {
 
     private final static String EMPTY_USERNAME = "";
-    private final static String USERNAME = "AnDevCba";
-    private final static String NOT_IN_CACHE_USERNAME = "NotInCache";
-    private final static String NOT_VALID_USERNAME = "Na_Na_Na_Na_Na_Na_Na_Naa_Batman";
+    private final static String USERNAME = "andevcba";
+    private final static String NOT_IN_CACHE_USERNAME = "no_in_cache";
+    private final static String NOT_VALID_USERNAME = "na_na_na_na_na_na_na_naa_batman";
     private final static String REPO_NAME = "RepoName";
 
     private final static String ERROR_MESSAGE = "Error message";
@@ -124,7 +125,7 @@ public class AddReposPresenterTest {
         presenter.searchReposByUsername(NOT_VALID_USERNAME);
 
         // Callback is captured and invoked with stubbed repos by username
-        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
+        verify(searchReposByUsernameInteractor).execute(eq(NOT_VALID_USERNAME), reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onError(ERROR_MESSAGE);
 
         // Then
@@ -140,7 +141,7 @@ public class AddReposPresenterTest {
         presenter.searchReposByUsername(NOT_IN_CACHE_USERNAME);
 
         // Callback is captured and invoked with stubbed repos by username
-        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
+        verify(searchReposByUsernameInteractor).execute(eq(NOT_IN_CACHE_USERNAME), reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onResponse(model);
 
         // Then
@@ -164,7 +165,7 @@ public class AddReposPresenterTest {
         presenter.searchReposByUsername(USERNAME);
 
         // Callback is captured and invoked with stubbed repos by username
-        verify(searchReposByUsernameInteractor).execute(reposCallbackArgumentCaptor.capture());
+        verify(searchReposByUsernameInteractor).execute(eq(USERNAME), reposCallbackArgumentCaptor.capture());
         reposCallbackArgumentCaptor.getValue().onResponse(model);
 
         // Then
@@ -182,9 +183,6 @@ public class AddReposPresenterTest {
 
     @Test
     public void saveReposByUsername_shouldNavigateToReposScreen() {
-        // Given a a stubbed model
-        model = new ReposByUsername(REPOS_BY_USERNAME_MAP, true /* is cached */);
-
         // When
         presenter.saveReposByUsername();
 
