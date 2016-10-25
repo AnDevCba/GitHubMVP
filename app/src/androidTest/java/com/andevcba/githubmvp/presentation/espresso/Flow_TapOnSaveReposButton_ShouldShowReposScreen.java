@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.andevcba.githubmvp.R;
+import com.andevcba.githubmvp.presentation.add_repos.AddReposActivity;
 import com.andevcba.githubmvp.presentation.show_repos.view.ReposActivity;
 
 import org.hamcrest.Description;
@@ -22,7 +23,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -30,15 +31,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * UI tests for {@link AddReposActivity} starting at {@link ReposActivity}  using Espresso test recorder.
+ *
+ * @author lucas.nobile
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class Flow_TapOnSaveReposButtonShouldShowReposScreen {
+public class Flow_TapOnSaveReposButton_ShouldShowReposScreen {
+
+    private final static String USERNAME = "AnDevCba";
 
     @Rule
     public ActivityTestRule<ReposActivity> mActivityTestRule = new ActivityTestRule<>(ReposActivity.class);
 
     @Test
-    public void tapOnSaveReposButtonShouldShowReposScreen() {
+    public void tapOnSaveReposButton_ShouldShowReposScreen() {
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab_add_repos),
                         withParent(withId(R.id.coordinatorLayout)),
@@ -55,10 +63,11 @@ public class Flow_TapOnSaveReposButtonShouldShowReposScreen {
                 allOf(withId(R.id.tv_username),
                         withParent(withId(R.id.search_repos_container)),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("AnDevCba"), closeSoftKeyboard());
+        appCompatEditText2.perform(typeText(USERNAME), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_search_repos), withText(R.string.search_repos_button),
+                allOf(withId(R.id.btn_search_repos),
+                        withText(R.string.search_repos_button),
                         withParent(withId(R.id.search_repos_container)),
                         isDisplayed()));
         appCompatButton.perform(click());

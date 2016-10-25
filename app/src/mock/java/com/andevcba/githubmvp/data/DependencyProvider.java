@@ -3,6 +3,7 @@ package com.andevcba.githubmvp.data;
 import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.cache.ReposCacheImpl;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
+import com.andevcba.githubmvp.data.net.MockGitHubApiClient;
 import com.andevcba.githubmvp.data.repository.InMemoryRepository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
@@ -36,16 +37,9 @@ public class DependencyProvider {
     }
 
     public static Retrofit provideRetrofit() {
-        // Add interceptor to log request and response.
-        // Use this for testing purpose only.
-//            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-//            builder.addInterceptor(new LoggingInterceptor());
-//            OkHttpClient client = builder.build();
-
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(GitHubApiClient.ENDPOINT)
-//                    .client(client)
+                    .baseUrl("http://test.com")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -54,7 +48,7 @@ public class DependencyProvider {
 
     public static GitHubApiClient provideGitHubApiClient() {
         if (gitHubApiClient == null) {
-            gitHubApiClient = provideRetrofit().create(GitHubApiClient.class);
+            gitHubApiClient = new MockGitHubApiClient();
         }
         return gitHubApiClient;
     }
