@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Provides dependencies.
- *gt
+ *
  * @author lucas.nobile
  */
 public class DependencyProvider {
