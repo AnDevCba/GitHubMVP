@@ -63,7 +63,8 @@ public class ReposByUsernameUITest {
 
         // Then
         assertNotNull(items);
-        assertEquals(items.size(), 3);
+        assertEquals(3, items.size());
+        // This is because we must use matchers on 2nd param
         assertThat(items.get(0), instanceOf(StickyHeaderUI.class));
         assertThat(items.get(0).getType(), is(ViewType.STICKY_HEADER));
         assertEquals(items.get(0).getName(), USERNAME);

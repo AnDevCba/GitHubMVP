@@ -56,7 +56,7 @@ public class AddReposActivityTest {
         //When user doesn't interact with the view
 
         //Then
-        assertTrue(solo.waitForView(solo.getView(R.id.btn_search_repos)));
+        assertTrue(solo.waitForView(solo.getView(R.id.tv_username)));
     }
 
     @Test
