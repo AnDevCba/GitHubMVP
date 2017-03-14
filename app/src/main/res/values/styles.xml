@@ -2,7 +2,9 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.AppTheme" />
+    <style name="AppTheme" parent="Base.AppTheme" >
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 
     <style name="AppTheme.OverlapSystemBar" parent="Base.AppTheme" />
 
@@ -25,4 +27,12 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="Dialog" parent="@android:style/Theme.DeviceDefault.Dialog">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.andevcba.githubmvp.R;
 import com.andevcba.githubmvp.data.DependencyProvider;
@@ -21,6 +22,7 @@ import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import com.andevcba.githubmvp.presentation.show_repos.presenter.ReposPresenter;
+import com.andevcba.githubmvp.presentation.views.custom.ImageDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
@@ -42,6 +44,8 @@ public class ReposFragment extends Fragment implements ReposContract.View {
         void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI);
 
         void onRepoSelected(RepoUI repo);
+
+        void onImageSelected(ImageView circleImageView);
     }
 
     private ReposContract.Presenter presenter;
@@ -58,6 +62,14 @@ public class ReposFragment extends Fragment implements ReposContract.View {
         public void onRepoSelected(RepoUI repo) {
             presenter.goToGitHubRepoPage(repo.getUrl());
         }
+
+        @Override
+        public void onImageSelected(ImageView circleImageView) {
+            ImageDialog dialogFragment = new ImageDialog();
+            dialogFragment.show(getFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(circleImageView, circleImageView.getTransitionName()), "ImageDialog");
+        }
     };
 
     public static ReposFragment newInstance() {
@@ -68,7 +80,7 @@ public class ReposFragment extends Fragment implements ReposContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ReposPresenter(DependencyProvider.provideLoadReposInteractor(), this);
-        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_show_repos_message, itemSelectedListener);
+        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_show_repos_message, itemSelectedListener, getContext());
     }
 
     @Nullable
@@ -141,6 +153,7 @@ public class ReposFragment extends Fragment implements ReposContract.View {
     public void navigateToAddReposScreen() {
         Intent intent = new Intent(getContext(), AddReposActivity.class);
         startActivityForResult(intent, REQUEST_ADD_REPOS);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);;
     }
 
     @Override

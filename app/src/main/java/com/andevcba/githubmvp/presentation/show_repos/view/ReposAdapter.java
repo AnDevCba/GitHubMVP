@@ -1,9 +1,12 @@
 package com.andevcba.githubmvp.presentation.show_repos.view;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.andevcba.githubmvp.R;
@@ -12,6 +15,8 @@ import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import com.brandongogetap.stickyheaders.exposed.StickyHeaderHandler;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.EMPTY;
 import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.REPO_ITEM;
@@ -26,14 +31,16 @@ import static com.andevcba.githubmvp.presentation.show_repos.view.ViewType.STICK
  */
 public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderHandler {
 
+    private Context context;
     private List<ViewType> items;
     private int emptyResId;
     private ReposFragment.OnItemSelectedListener itemSelectedListener;
 
-    public ReposAdapter(List<ViewType> items, int emptyResId, ReposFragment.OnItemSelectedListener itemSelectedListener) {
+    public ReposAdapter(List<ViewType> items, int emptyResId, ReposFragment.OnItemSelectedListener itemSelectedListener, Context context) {
         this.items = items;
         this.emptyResId = emptyResId;
         this.itemSelectedListener = itemSelectedListener;
+        this.context = context;
     }
 
     @Override
@@ -64,6 +71,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
             ViewType item = items.get(position);
             ((ViewHolder) holder).tvName.setText(item.getName());
+            setAnimation(holder.itemView);
         }
     }
 
@@ -100,16 +108,33 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    private void setAnimation(View viewToAnimate)
+    {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_in);
+        viewToAnimate.startAnimation(animation);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvName;
+        private CircleImageView imageView;
         private ReposFragment.OnItemSelectedListener itemSelectedListener;
 
         ViewHolder(View itemView, ReposFragment.OnItemSelectedListener listener) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
+            imageView = (CircleImageView) itemView.findViewById(R.id.civ_user);
             itemSelectedListener = listener;
             itemView.setOnClickListener(this);
+
+            if (imageView != null ) {
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemSelectedListener.onImageSelected(imageView);
+                    }
+                });
+            }
         }
 
         @Override

@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.add_repos.AddReposActivity" />
+        <activity
+            android:parentActivityName=".presentation.show_repos.view.ReposActivity"
+            android:name=".presentation.add_repos.AddReposActivity" />
         <instrumentation
             android:name="android.test.InstrumentationTestRunner"
             android:targetPackage="com.matrix.edc.client.android" />

@@ -42,6 +42,7 @@ android {
             variant.setIgnore(true);
         }
     }
+    buildToolsVersion '25.0.0'
 }
 
 dependencies {
@@ -56,6 +57,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
     compile "com.squareup.retrofit2:retrofit-mock:$rootProject.ext.retrofitVersion"
     compile "com.brandongogetap:stickyheaders:$rootProject.ext.stickyHeadersVersion"
+    compile "de.hdodenhof:circleimageview:$rootProject.ext.circleImageVersion"
 
     // Unit Testing dependencies
     testCompile "junit:junit:$rootProject.ext.junitVersion"

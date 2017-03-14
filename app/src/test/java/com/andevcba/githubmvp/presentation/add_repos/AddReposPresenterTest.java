@@ -147,8 +147,8 @@ public class AddReposPresenterTest {
         // Then
         // progress indicator is hidden
         InOrder inOrder = Mockito.inOrder(view);
-        inOrder.verify(view).hideSoftKeyboard();
         inOrder.verify(view).showProgressBar(true);
+        inOrder.verify(view).hideSoftKeyboard();
         inOrder.verify(view).showProgressBar(false);
         // and repos are shown in UI
         ReposByUsernameUI reposByUsernameUI = presenter.getUiModel();
@@ -171,8 +171,8 @@ public class AddReposPresenterTest {
         // Then
         // progress indicator is hidden
         InOrder inOrder = Mockito.inOrder(view);
-        inOrder.verify(view).hideSoftKeyboard();
         inOrder.verify(view).showProgressBar(true);
+        inOrder.verify(view).hideSoftKeyboard();
         inOrder.verify(view).showProgressBar(false);
         // and repos are shown in UI
         ReposByUsernameUI uiModel = presenter.getUiModel();
