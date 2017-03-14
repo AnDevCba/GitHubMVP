@@ -57,6 +57,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     private RecyclerView rvShowRepos;
     private RelativeLayout relativeLayout;
     private FloatingActionButton fab;
+    private ImageDialog dialogFragment;
     private String lastQuery = "";
 
     private ReposFragment.OnItemSelectedListener itemSelectedListener = new ReposFragment.OnItemSelectedListener() {
@@ -72,7 +73,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
         @Override
         public void onImageSelected(ImageView circleImageView) {
-            ImageDialog dialogFragment = new ImageDialog();
+            dialogFragment = new ImageDialog();
             dialogFragment.show(getFragmentManager()
                     .beginTransaction()
                     .addSharedElement(circleImageView, circleImageView.getTransitionName()), "ImageDialog");
