@@ -139,4 +139,13 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     public ReposByUsernameUI getUiModel() {
         return uiModel;
     }
+
+    @Override
+    public void refreshRepos(String lastQuery) {
+        if (lastQuery.isEmpty()) {
+            view.stopRefreshing();
+        } else {
+            searchReposByUsername(lastQuery);
+        }
+    }
 }

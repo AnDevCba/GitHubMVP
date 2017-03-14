@@ -31,6 +31,8 @@ public interface AddReposContract {
         void browseGitHubRepoPage(String url);
 
         void showReposAlreadySaved();
+
+        void stopRefreshing();
     }
 
     interface Presenter {
@@ -50,5 +52,7 @@ public interface AddReposContract {
         ReposByUsername transformUiModelToModel(ReposByUsernameUI data);
 
         ReposByUsernameUI getUiModel();
+
+        void refreshRepos(String lastQuery);
     }
 }

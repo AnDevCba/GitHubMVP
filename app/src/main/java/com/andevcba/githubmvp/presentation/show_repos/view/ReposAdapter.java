@@ -108,8 +108,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    private void setAnimation(View viewToAnimate)
-    {
+    private void setAnimation(View viewToAnimate) {
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.right_in);
         viewToAnimate.startAnimation(animation);
     }

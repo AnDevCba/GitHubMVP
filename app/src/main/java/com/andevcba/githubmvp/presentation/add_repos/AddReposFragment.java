@@ -112,12 +112,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        if (!lastQuery.isEmpty()) {
-                            presenter.searchReposByUsername(lastQuery);
-                        } else {
-                            swipeRefreshLayout.setRefreshing(false);
-                            showEmptyUsernameError();
-                        }
+                        presenter.refreshRepos(lastQuery);
                     }
                 }
         );
@@ -151,7 +146,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
             }
             @Override
             public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                //Not implemented
                 return true;
             }
         });
@@ -300,6 +295,12 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     @Override
     public void showReposAlreadySaved() {
         Snackbar.make(relativeLayout, getString(R.string.error_repos_already_saved_message), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+        showEmptyUsernameError();
     }
 
     private void browse(Uri uri) {

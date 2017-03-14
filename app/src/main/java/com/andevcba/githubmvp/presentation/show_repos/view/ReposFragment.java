@@ -39,6 +39,7 @@ public class ReposFragment extends Fragment implements ReposContract.View {
     private static final String KEY_REPOS_BY_USERNAME = "repos_by_username";
 
     private RecyclerView rvShowRepos;
+    private ImageDialog dialogFragment;
 
     public interface OnItemSelectedListener {
         void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI);
@@ -65,7 +66,7 @@ public class ReposFragment extends Fragment implements ReposContract.View {
 
         @Override
         public void onImageSelected(ImageView circleImageView) {
-            ImageDialog dialogFragment = new ImageDialog();
+            dialogFragment = new ImageDialog();
             dialogFragment.show(getFragmentManager()
                     .beginTransaction()
                     .addSharedElement(circleImageView, circleImageView.getTransitionName()), "ImageDialog");
