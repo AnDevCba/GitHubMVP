@@ -71,7 +71,9 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
             ViewType item = items.get(position);
             ((ViewHolder) holder).tvName.setText(item.getName());
-            setAnimation(holder.itemView);
+            if (REPO_ITEM == item.getType()) {
+                setAnimation(holder.itemView);
+            }
         }
     }
 
