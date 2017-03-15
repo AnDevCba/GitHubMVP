@@ -1,7 +1,10 @@
 # GitHubMVP
-Android app that allows the user to search for GitHub repos by a given username. The architecture is based on Clean Architecture using Model-View-Presenter + Interactor + Repository patterns.
+Android app that allows the user to search for GitHub repos by a given username. We use Material Design for UI/UX. The architecture is based on Clean Architecture using Model-View-Presenter + Interactor + Repository patterns.
 
-## Architecture 
+## Material Design
+![Material design](/images/material_design.gif)
+
+## Architecture
 ![App architecture](/images/architecture_android.png)
 
 1. [Data layer:](https://github.com/AnDevCba/GitHubMVP/tree/master/app/src/main/java/com/andevcba/githubmvp/data) All data needed for the application comes from this layer using the Repository pattern with a Factory pattern to create an `InMemoryRepository` or a `NetworkRepository` if the given username is cached or not, respectively. The idea behind this is the data source is transparent for the client.
