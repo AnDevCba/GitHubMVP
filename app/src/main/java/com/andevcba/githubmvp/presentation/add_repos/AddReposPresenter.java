@@ -38,11 +38,12 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
     @Override
     public void searchReposByUsername(final String username) {
+        view.showProgressBar(true);
         if (username.isEmpty()) {
             view.showEmptyUsernameError();
+            view.showProgressBar(false);
         } else {
             view.hideSoftKeyboard();
-            view.showProgressBar(true);
 
             String formattedUsername = username.toLowerCase().trim();
             searchReposInteractor.execute(formattedUsername, this);
@@ -137,5 +138,14 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
     public ReposByUsernameUI getUiModel() {
         return uiModel;
+    }
+
+    @Override
+    public void refreshRepos(String lastQuery) {
+        if (lastQuery.isEmpty()) {
+            view.stopRefreshing();
+        } else {
+            searchReposByUsername(lastQuery);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.andevcba.githubmvp.presentation.add_repos;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,7 +25,7 @@ public class AddReposActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_repos);
-
+        ActivityCompat.postponeEnterTransition(this);
         setUpToolbar();
 
         if (savedInstanceState == null) {
@@ -37,6 +38,7 @@ public class AddReposActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.add_repos_title);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void initFragment(Fragment addReposFragment) {
@@ -44,5 +46,11 @@ public class AddReposActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, addReposFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 }

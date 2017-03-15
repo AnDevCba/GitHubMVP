@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content">
-
-<LinearLayout
-    style="@style/Widget.CardContent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:transitionName="repo">
 
-    <TextView
-        android:id="@+id/tv_name"
-        style="@android:style/TextAppearance.Large"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        style="@style/Widget.CardContent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="{Header name}" />
-</LinearLayout>
+        android:orientation="horizontal"
+        android:id="@+id/transition_container">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_user"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/octocat"
+            android:padding="8dp"
+            android:clickable="true"
+            android:transitionName="imageTransition"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="36sp"
+            tools:text="{Header name}"
+            android:transitionName="usernameTransition"/>
+
+    </LinearLayout>
 </android.support.v7.widget.CardView>

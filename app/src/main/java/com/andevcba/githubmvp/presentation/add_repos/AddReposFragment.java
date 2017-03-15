@@ -3,20 +3,28 @@ package com.andevcba.githubmvp.presentation.add_repos;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.andevcba.githubmvp.R;
 import com.andevcba.githubmvp.data.DependencyProvider;
@@ -26,6 +34,7 @@ import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import com.andevcba.githubmvp.presentation.show_repos.view.ReposAdapter;
 import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
+import com.andevcba.githubmvp.presentation.views.custom.ImageDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
@@ -44,10 +53,12 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     private ReposAdapter adapter;
 
-    private EditText tvUsername;
-    private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rvShowRepos;
+    private RelativeLayout relativeLayout;
     private FloatingActionButton fab;
+    private ImageDialog dialogFragment;
+    private String lastQuery = "";
 
     private ReposFragment.OnItemSelectedListener itemSelectedListener = new ReposFragment.OnItemSelectedListener() {
         @Override
@@ -58,6 +69,14 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         @Override
         public void onRepoSelected(RepoUI repo) {
             presenter.goToGitHubRepoPage(repo.getUrl());
+        }
+
+        @Override
+        public void onImageSelected(ImageView circleImageView) {
+            dialogFragment = new ImageDialog();
+            dialogFragment.show(getFragmentManager()
+                    .beginTransaction()
+                    .addSharedElement(circleImageView, circleImageView.getTransitionName()), "ImageDialog");
         }
     };
 
@@ -70,7 +89,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
         super.onCreate(savedInstanceState);
 
         presenter = new AddReposPresenter(DependencyProvider.provideSearchReposByUsernameInteractor(), DependencyProvider.provideSaveReposInteractor(), this);
-        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener);
+        adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener, getContext());
     }
 
     @Nullable
@@ -78,13 +97,60 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_repos, container, false);
 
-        tvUsername = (EditText) view.findViewById(R.id.tv_username);
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_layout);
 
         setUpRecyclerView(view);
         setUpListeners(view);
+        setUpSwipeToRefresh();
+        setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void setUpSwipeToRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        presenter.refreshRepos(lastQuery);
+                    }
+                }
+        );
+
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.md_indigo_50,
+                R.color.md_indigo_300,
+                R.color.md_indigo_600,
+                R.color.md_indigo_900
+        );
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate( R.menu.menu, menu);
+
+        final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setIconifiedByDefault(false);
+        searchView.setIconified(false);
+        myActionMenuItem.expandActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                rvShowRepos.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                lastQuery = query;
+
+                presenter.searchReposByUsername(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //Not implemented
+                return true;
+            }
+        });
     }
 
     private void setUpRecyclerView(View view) {
@@ -100,21 +166,6 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     }
 
     private void setUpListeners(View view) {
-        Button btnSearchRepos = (Button) view.findViewById(R.id.btn_search_repos);
-        btnSearchRepos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                rvShowRepos.setVisibility(View.GONE);
-                fab.setVisibility(View.GONE);
-
-                String username = tvUsername.getText().toString();
-
-                // DO NOT validate if it is empty on the View!!!
-                presenter.searchReposByUsername(username);
-            }
-        });
-
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_save_repos);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +193,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     @Override
     public void showEmptyUsernameError() {
-        Snackbar.make(tvUsername, getString(R.string.empty_username_error_message), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(relativeLayout, getString(R.string.empty_username_error_message), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -160,9 +211,8 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     @Override
     public void showProgressBar(boolean show) {
-        if (progressBar != null) {
-            int visibility = show ? View.VISIBLE : View.GONE;
-            progressBar.setVisibility(visibility);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(show);
         }
     }
 
@@ -170,7 +220,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     public void showError(String error) {
         adapter.clearAll();
         rvShowRepos.setVisibility(View.VISIBLE);
-        Snackbar.make(getView(), getString(R.string.error_searching_for_repos_message), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(relativeLayout, getString(R.string.error_searching_for_repos_message), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -183,8 +233,52 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     }
 
     public void navigateToReposScreen() {
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        navigateWithAnimation();
+    }
+
+    private void navigateWithAnimation() {
+        final Rect viewRect = new Rect();
+        rvShowRepos.getChildAt(0).getGlobalVisibleRect(viewRect);
+
+        Explode explode = new Explode();
+        explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+            @Override
+            public Rect onGetEpicenter(Transition transition) {
+                return viewRect;
+            }
+        });
+
+        explode.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                getActivity().setResult(Activity.RESULT_OK);
+                getActivity().finish();
+                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
+
+        TransitionManager.beginDelayedTransition(rvShowRepos, explode);
+        rvShowRepos.setAdapter(null);
     }
 
     @Override
@@ -201,12 +295,29 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     @Override
     public void showReposAlreadySaved() {
-        Snackbar.make(getView(), getString(R.string.error_repos_already_saved_message), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(relativeLayout, getString(R.string.error_repos_already_saved_message), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
+        showEmptyUsernameError();
     }
 
     private void browse(Uri uri) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                break;
+        }
+        return true;
     }
 }
