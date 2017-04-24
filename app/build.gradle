@@ -57,6 +57,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit-mock:$rootProject.ext.retrofitVersion"
     compile "com.brandongogetap:stickyheaders:$rootProject.ext.stickyHeadersVersion"
     compile "de.hdodenhof:circleimageview:$rootProject.ext.circleImageVersion"
+    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    annotationProcessor  "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    provided "javax.annotation:jsr250-api:$rootProject.ext.javaxAnnotationVersion"
 
     // Unit Testing dependencies
     testCompile "junit:junit:$rootProject.ext.junitVersion"
