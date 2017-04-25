@@ -1,5 +1,6 @@
 <resources>
     <!-- TODO Group messages by screen -->
+    <string name="app_name">GitHubMVP App</string>
     <string name="empty_show_repos_message">No repos found :(\nPlease tap on + button to start adding repos.</string>
     <string name="empty_search_repos_message">No repos found :(\nPlease try with other username.</string>
     <string name="search_repos_title">Search for repos by username.</string>
