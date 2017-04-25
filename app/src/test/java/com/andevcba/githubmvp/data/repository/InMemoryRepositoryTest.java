@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit test for {@link InMemoryRepository}.
+ * Unit tests for {@link InMemoryRepository}.
  *
  * @author lucas.nobile
  */
@@ -35,7 +35,8 @@ public class InMemoryRepositoryTest {
     private final static Repo REPO2 = new Repo("repo2", "url2");
     private static List<Repo> REPO_LIST = new ArrayList<>();
 
-    private static TreeMap<String, List<Repo>> REPOS_BY_USERNAME_MAP;
+    private static TreeMap<String, List<Repo>> REPOS_BY_USERNAME_MAP = new TreeMap<>();
+
     private static ReposByUsername reposByUsername;
 
     @Mock
@@ -56,7 +57,6 @@ public class InMemoryRepositoryTest {
         REPO_LIST.add(REPO2);
 
         // Stubbed repos by username
-        REPOS_BY_USERNAME_MAP = new TreeMap<>();
         REPOS_BY_USERNAME_MAP.put(USERNAME, REPO_LIST);
 
         reposByUsername = new ReposByUsername(REPOS_BY_USERNAME_MAP, true /* is cached */);

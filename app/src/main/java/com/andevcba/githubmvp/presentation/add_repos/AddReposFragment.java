@@ -27,18 +27,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.andevcba.githubmvp.R;
-import com.andevcba.githubmvp.data.DependencyProvider;
+import com.andevcba.githubmvp.presentation.GitHubMVPApplication;
+import com.andevcba.githubmvp.presentation.di.PresentationComponent;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
 import com.andevcba.githubmvp.presentation.show_repos.view.ReposAdapter;
-import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
+import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 import com.andevcba.githubmvp.presentation.views.custom.ImageDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Allows the user to search for repos by username and shows repos if any.
@@ -49,8 +52,8 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     private static final String KEY_UI_MODEL = "ui_model";
 
-    private AddReposContract.Presenter presenter;
-
+    @Inject
+    AddReposPresenter presenter;
     private ReposAdapter adapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -60,7 +63,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     private ImageDialog dialogFragment;
     private String lastQuery = "";
 
-    private ReposFragment.OnItemSelectedListener itemSelectedListener = new ReposFragment.OnItemSelectedListener() {
+    private ShowReposFragment.OnItemSelectedListener itemSelectedListener = new ShowReposFragment.OnItemSelectedListener() {
         @Override
         public void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI) {
             presenter.goToGitHubUsernamePage(stickyHeaderUI.getName());
@@ -88,7 +91,10 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new AddReposPresenter(DependencyProvider.provideSearchReposByUsernameInteractor(), DependencyProvider.provideSaveReposInteractor(), this);
+        // Inject dependencies
+        this.getPresentationComponent().inject(this);
+
+        presenter.attachView(this);
         adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_search_repos_message, itemSelectedListener, getContext());
     }
 
@@ -128,9 +134,9 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate( R.menu.menu, menu);
+        inflater.inflate(R.menu.menu, menu);
 
-        final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        final MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
@@ -145,6 +151,7 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
                 presenter.searchReposByUsername(query);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 //Not implemented
@@ -319,5 +326,9 @@ public class AddReposFragment extends Fragment implements AddReposContract.View 
                 break;
         }
         return true;
+    }
+
+    private PresentationComponent getPresentationComponent() {
+        return ((GitHubMVPApplication) getActivity().getApplication()).getPresentationComponent();
     }
 }

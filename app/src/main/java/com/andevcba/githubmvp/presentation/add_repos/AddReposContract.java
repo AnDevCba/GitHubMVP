@@ -37,6 +37,10 @@ public interface AddReposContract {
 
     interface Presenter {
 
+        void attachView(AddReposContract.View view);
+
+        boolean isViewAttached();
+
         void searchReposByUsername(String username);
 
         void saveReposByUsername();

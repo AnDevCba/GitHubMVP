@@ -81,6 +81,9 @@ public class AddReposPresenterTest {
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
 
+        // ALWAYS attach the view
+        presenter.attachView(view);
+
         // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);

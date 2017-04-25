@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 apply from: "../dependencies.gradle"
 
 android {
@@ -24,24 +25,6 @@ android {
             testCoverageEnabled = true
         }
     }
-
-    productFlavors {
-        mock {
-            applicationIdSuffix = ".mock"
-            resValue "string", "app_name", "GitHubMVP Mock"
-        }
-        prod {
-            resValue "string", "app_name", "GitHubMVP Prod"
-        }
-    }
-
-    // Remove mockRelease build variant as it's not needed.
-    android.variantFilter { variant ->
-        if (variant.buildType.name.equals('release')
-                && variant.getFlavors().get(0).name.equals('mock')) {
-            variant.setIgnore(true);
-        }
-    }
 }
 
 dependencies {
@@ -57,14 +40,14 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit-mock:$rootProject.ext.retrofitVersion"
     compile "com.brandongogetap:stickyheaders:$rootProject.ext.stickyHeadersVersion"
     compile "de.hdodenhof:circleimageview:$rootProject.ext.circleImageVersion"
+    apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
-    annotationProcessor  "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     provided "javax.annotation:jsr250-api:$rootProject.ext.javaxAnnotationVersion"
 
     // Unit Testing dependencies
     testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-core:$rootProject.ext.hamcrestVersion"
 
     // Android Testing Support Library's dependencies
     androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
@@ -74,5 +57,4 @@ dependencies {
     // UI Testing dependencies
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
     androidTestCompile "com.jayway.android.robotium:robotium-solo:$rootProject.ext.robotiumVersion"
-
 }

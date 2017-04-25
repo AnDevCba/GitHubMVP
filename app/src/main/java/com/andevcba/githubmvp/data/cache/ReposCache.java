@@ -19,4 +19,6 @@ public interface ReposCache {
     TreeMap<String, List<Repo>> getAll();
 
     boolean isCached(String username);
+
+    int size();
 }

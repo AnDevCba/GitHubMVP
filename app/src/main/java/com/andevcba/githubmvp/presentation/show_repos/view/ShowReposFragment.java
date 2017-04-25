@@ -15,31 +15,28 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.andevcba.githubmvp.R;
-import com.andevcba.githubmvp.data.DependencyProvider;
+import com.andevcba.githubmvp.presentation.GitHubMVPApplication;
 import com.andevcba.githubmvp.presentation.add_repos.AddReposActivity;
-import com.andevcba.githubmvp.presentation.show_repos.ReposContract;
+import com.andevcba.githubmvp.presentation.di.PresentationComponent;
+import com.andevcba.githubmvp.presentation.show_repos.ShowReposContract;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.StickyHeaderUI;
-import com.andevcba.githubmvp.presentation.show_repos.presenter.ReposPresenter;
+import com.andevcba.githubmvp.presentation.show_repos.presenter.ShowReposPresenter;
 import com.andevcba.githubmvp.presentation.views.custom.ImageDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Shows a list of repos grouped by username and sorted alphabetically.
  *
  * @author lucas.nobile
  */
-public class ReposFragment extends Fragment implements ReposContract.View {
-
-    private static final int REQUEST_ADD_REPOS = 1;
-    private static final String KEY_REPOS_BY_USERNAME = "repos_by_username";
-
-    private RecyclerView rvShowRepos;
-    private ImageDialog dialogFragment;
+public class ShowReposFragment extends Fragment implements ShowReposContract.View {
 
     public interface OnItemSelectedListener {
         void onStickyHeaderSelected(StickyHeaderUI stickyHeaderUI);
@@ -49,9 +46,15 @@ public class ReposFragment extends Fragment implements ReposContract.View {
         void onImageSelected(ImageView circleImageView);
     }
 
-    private ReposContract.Presenter presenter;
+    private static final int REQUEST_ADD_REPOS = 1;
+    private static final String KEY_REPOS_BY_USERNAME = "repos_by_username";
 
+    @Inject
+    ShowReposPresenter presenter;
     private ReposAdapter adapter;
+
+    private RecyclerView rvShowRepos;
+    private ImageDialog dialogFragment;
 
     private OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
         @Override
@@ -73,14 +76,18 @@ public class ReposFragment extends Fragment implements ReposContract.View {
         }
     };
 
-    public static ReposFragment newInstance() {
-        return new ReposFragment();
+    public static ShowReposFragment newInstance() {
+        return new ShowReposFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ReposPresenter(DependencyProvider.provideLoadReposInteractor(), this);
+
+        // Inject dependencies
+        this.getPresentationComponent().inject(this);
+
+        presenter.attachView(this);
         adapter = new ReposAdapter(new ArrayList<ViewType>(), R.string.empty_show_repos_message, itemSelectedListener, getContext());
     }
 
@@ -154,7 +161,8 @@ public class ReposFragment extends Fragment implements ReposContract.View {
     public void navigateToAddReposScreen() {
         Intent intent = new Intent(getContext(), AddReposActivity.class);
         startActivityForResult(intent, REQUEST_ADD_REPOS);
-        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);;
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        ;
     }
 
     @Override
@@ -185,5 +193,9 @@ public class ReposFragment extends Fragment implements ReposContract.View {
         if (REQUEST_ADD_REPOS == requestCode && Activity.RESULT_OK == resultCode) {
             Snackbar.make(getView(), getString(R.string.repos_saved_message), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    private PresentationComponent getPresentationComponent() {
+        return ((GitHubMVPApplication) getActivity().getApplication()).getPresentationComponent();
     }
 }

@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Presenter that handles user actions from {@link AddReposFragment} view,
  * shows repos by a given user name and updates the view.
@@ -22,6 +25,7 @@ import java.util.TreeMap;
  *
  * @author lucas.nobile
  */
+@Singleton
 public class AddReposPresenter implements AddReposContract.Presenter, ReposCallback {
 
     private Interactor searchReposInteractor;
@@ -30,80 +34,102 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
     private ReposByUsername model;
     private ReposByUsernameUI uiModel;
 
-    public AddReposPresenter(SearchReposByUsernameInteractor searchReposInteractor, SaveReposInteractor saveReposInteractor, AddReposContract.View view) {
+    @Inject
+    public AddReposPresenter(SearchReposByUsernameInteractor searchReposInteractor, SaveReposInteractor saveReposInteractor) {
         this.searchReposInteractor = searchReposInteractor;
         this.saveReposInteractor = saveReposInteractor;
+    }
+
+    @Override
+    public void attachView(AddReposContract.View view) {
         this.view = view;
+    }
+
+    public boolean isViewAttached() {
+        return view != null;
     }
 
     @Override
     public void searchReposByUsername(final String username) {
-        view.showProgressBar(true);
-        if (username.isEmpty()) {
-            view.showEmptyUsernameError();
-            view.showProgressBar(false);
-        } else {
-            view.hideSoftKeyboard();
+        if (isViewAttached()) {
+            view.showProgressBar(true);
+            if (username.isEmpty()) {
+                view.showEmptyUsernameError();
+                view.showProgressBar(false);
+            } else {
+                view.hideSoftKeyboard();
 
-            String formattedUsername = username.toLowerCase().trim();
-            searchReposInteractor.execute(formattedUsername, this);
+                String formattedUsername = username.toLowerCase().trim();
+                searchReposInteractor.execute(formattedUsername, this);
+            }
         }
     }
 
     @Override
     public void onResponse(ReposByUsername model) {
-        view.showProgressBar(false);
+        if (isViewAttached()) {
+            view.showProgressBar(false);
 
-        this.model = model;
-        uiModel = transformModelToUiModel(model);
+            this.model = model;
+            uiModel = transformModelToUiModel(model);
 
-        view.showRepos(uiModel);
+            view.showRepos(uiModel);
 
-        if (model.isCached()) {
-            view.showReposAlreadySaved();
-            view.showSaveReposButton(false);
-        } else {
-            view.showSaveReposButton(true);
+            if (model.isCached()) {
+                view.showReposAlreadySaved();
+                view.showSaveReposButton(false);
+            } else {
+                view.showSaveReposButton(true);
+            }
         }
     }
 
     @Override
     public void onError(String error) {
-        view.showProgressBar(false);
-        view.showError(error);
-        view.showSaveReposButton(false);
+        if (isViewAttached()) {
+            view.showProgressBar(false);
+            view.showError(error);
+            view.showSaveReposButton(false);
+        }
     }
 
     @Override
     public void saveReposByUsername() {
-        saveReposInteractor.execute(model);
-
-        view.navigateToReposScreen();
+        if (isViewAttached()) {
+            saveReposInteractor.execute(model);
+            view.navigateToReposScreen();
+        }
     }
 
     @Override
     public void goToGitHubUsernamePage(String username) {
-        String url = GitHubApiClient.BASE_URL + username;
-        view.browseGitHubUsernamePage(url);
+        if (isViewAttached()) {
+            String url = GitHubApiClient.BASE_URL + username;
+            view.browseGitHubUsernamePage(url);
+        }
     }
 
     @Override
     public void goToGitHubRepoPage(String url) {
-        view.browseGitHubRepoPage(url);
+        if (isViewAttached()) {
+            view.browseGitHubRepoPage(url);
+        }
     }
 
     @Override
     public void restoreStateAndShowRepos(ReposByUsernameUI uiModel) {
-        if (uiModel != null) {
-            this.uiModel = uiModel;
-            this.model = transformUiModelToModel(uiModel);
-            view.showRepos(this.uiModel);
+        if (isViewAttached()) {
+            if (uiModel != null) {
+                this.uiModel = uiModel;
+                this.model = transformUiModelToModel(uiModel);
+                view.showRepos(this.uiModel);
 
-            if (uiModel.isCached()) {
-                view.showReposAlreadySaved();
-                view.showSaveReposButton(false);
-            } else {
-                view.showSaveReposButton(true);
+                if (uiModel.isCached()) {
+                    view.showReposAlreadySaved();
+                    view.showSaveReposButton(false);
+                } else {
+                    view.showSaveReposButton(true);
+                }
             }
         }
     }
@@ -142,10 +168,12 @@ public class AddReposPresenter implements AddReposContract.Presenter, ReposCallb
 
     @Override
     public void refreshRepos(String lastQuery) {
-        if (lastQuery.isEmpty()) {
-            view.stopRefreshing();
-        } else {
-            searchReposByUsername(lastQuery);
+        if (isViewAttached()) {
+            if (lastQuery.isEmpty()) {
+                view.stopRefreshing();
+            } else {
+                searchReposByUsername(lastQuery);
+            }
         }
     }
 }

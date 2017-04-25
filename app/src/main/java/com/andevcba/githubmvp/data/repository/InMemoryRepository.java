@@ -24,15 +24,20 @@ import com.andevcba.githubmvp.data.model.ReposByUsername;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Concrete implementation to load {@link Repo}s from memory.
  *
  * @author lucas.nobile
  */
+@Singleton
 public class InMemoryRepository extends RepositoryAdapter {
 
     private ReposCache reposCache;
 
+    @Inject
     public InMemoryRepository(ReposCache reposCache) {
         this.reposCache = reposCache;
     }

@@ -16,17 +16,16 @@ import com.andevcba.githubmvp.R;
  *
  * @author lucas.nobile
  */
-public class ReposActivity extends AppCompatActivity {
+public class ShowReposActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repos);
-
         setUpToolbar();
 
         if (savedInstanceState == null) {
-            initFragment(ReposFragment.newInstance());
+            initFragment(ShowReposFragment.newInstance());
         }
     }
 

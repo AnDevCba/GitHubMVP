@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -41,14 +41,11 @@ public class ReposCacheTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        reposCache = new ReposCacheImpl();
-
         // Stubbed repo list
         REPO_LIST.add(REPO1);
         REPO_LIST.add(REPO2);
 
-        // Stubbed repos by username
-        REPOS_BY_USERNAME.put(USERNAME, REPO_LIST);
+        reposCache = new ReposCacheImpl(REPOS_BY_USERNAME);
     }
 
     @After
@@ -65,13 +62,7 @@ public class ReposCacheTest {
 
         // Then
         // Expected, Actual
-        assertTrue(!reposCache.cachedRepos.isEmpty());
-        assertEquals(1, reposCache.cachedRepos.size());
-        assertEquals(2, reposCache.cachedRepos.get(USERNAME).size());
-        assertEquals("repo1", reposCache.cachedRepos.get(USERNAME).get(0).getName());
-        assertEquals("url1", reposCache.cachedRepos.get(USERNAME).get(0).getUrl());
-        assertEquals("repo2", reposCache.cachedRepos.get(USERNAME).get(1).getName());
-        assertEquals("url2", reposCache.cachedRepos.get(USERNAME).get(1).getUrl());
+        assertEquals(1, reposCache.size());
     }
 
     @Test
