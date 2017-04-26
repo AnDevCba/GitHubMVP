@@ -34,9 +34,9 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context context;
     private List<ViewType> items;
     private int emptyResId;
-    private ReposFragment.OnItemSelectedListener itemSelectedListener;
+    private ShowReposFragment.OnItemSelectedListener itemSelectedListener;
 
-    public ReposAdapter(List<ViewType> items, int emptyResId, ReposFragment.OnItemSelectedListener itemSelectedListener, Context context) {
+    public ReposAdapter(List<ViewType> items, int emptyResId, ShowReposFragment.OnItemSelectedListener itemSelectedListener, Context context) {
         this.items = items;
         this.emptyResId = emptyResId;
         this.itemSelectedListener = itemSelectedListener;
@@ -119,9 +119,9 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private TextView tvName;
         private CircleImageView imageView;
-        private ReposFragment.OnItemSelectedListener itemSelectedListener;
+        private ShowReposFragment.OnItemSelectedListener itemSelectedListener;
 
-        ViewHolder(View itemView, ReposFragment.OnItemSelectedListener listener) {
+        ViewHolder(View itemView, ShowReposFragment.OnItemSelectedListener listener) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
             imageView = (CircleImageView) itemView.findViewById(R.id.civ_user);

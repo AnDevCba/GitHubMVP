@@ -5,7 +5,7 @@ import com.andevcba.githubmvp.data.model.Repo;
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
-import com.andevcba.githubmvp.presentation.show_repos.ReposContract;
+import com.andevcba.githubmvp.presentation.show_repos.ShowReposContract;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
 
@@ -26,11 +26,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 /**
- * Unit tests for {@link ReposPresenter}.
+ * Unit tests for {@link ShowReposPresenter}.
  *
  * @author lucas.nobile
  */
-public class ReposPresenterTest {
+public class ShowReposPresenterTest {
 
     private final static String USERNAME = "AnDevCba";
     private final static String REPO_NAME = "RepoName";
@@ -50,7 +50,7 @@ public class ReposPresenterTest {
     private static ReposByUsernameUI uiModel;
 
     @Mock
-    private ReposContract.View view;
+    private ShowReposContract.View view;
 
     @Mock
     private LoadReposInteractor loadReposInteractor;
@@ -63,13 +63,16 @@ public class ReposPresenterTest {
     private ArgumentCaptor<ReposCallback> reposCallbackArgumentCaptor;
 
     @InjectMocks
-    private ReposPresenter presenter;
+    private ShowReposPresenter presenter;
 
     @Before
     public void setUp() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
+
+        // ALWAYS attach the view
+        presenter.attachView(view);
 
         // Stubbed repo list
         REPO_LIST.add(REPO1);

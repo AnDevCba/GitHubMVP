@@ -2,15 +2,15 @@ package com.andevcba.githubmvp.presentation.show_repos;
 
 import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
-import com.andevcba.githubmvp.presentation.show_repos.presenter.ReposPresenter;
-import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
+import com.andevcba.githubmvp.presentation.show_repos.presenter.ShowReposPresenter;
+import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 
 /**
- * Contract between {@link ReposFragment} and {@link ReposPresenter}
+ * Contract between {@link ShowReposFragment} and {@link ShowReposPresenter}
  *
  * @author lucas.nobile
  */
-public interface ReposContract {
+public interface ShowReposContract {
 
     interface View {
 
@@ -26,6 +26,10 @@ public interface ReposContract {
     }
 
     interface Presenter {
+
+        void attachView(ShowReposContract.View view);
+
+        boolean isViewAttached();
 
         void loadAllRepos();
 

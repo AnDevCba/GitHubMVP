@@ -6,32 +6,46 @@ import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import com.andevcba.githubmvp.domain.interactor.Interactor;
 import com.andevcba.githubmvp.domain.interactor.LoadReposInteractor;
-import com.andevcba.githubmvp.presentation.show_repos.ReposContract;
+import com.andevcba.githubmvp.presentation.show_repos.ShowReposContract;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
 import com.andevcba.githubmvp.presentation.show_repos.model.ReposByUsernameUI;
-import com.andevcba.githubmvp.presentation.show_repos.view.ReposFragment;
+import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
- * Presenter that handles user actions from {@link ReposFragment} view,
+ * Presenter that handles user actions from {@link ShowReposFragment} view,
  * shows repos by a given user name and updates the view.
  * <p>
  * Notice that Presenter knows nothing about Android framework.
  *
  * @author lucas.nobile
  */
-public class ReposPresenter implements ReposContract.Presenter, ReposCallback {
+@Singleton
+public class ShowReposPresenter implements ShowReposContract.Presenter, ReposCallback {
 
-    private final ReposContract.View view;
     private Interactor loadReposInteractor;
+    private ShowReposContract.View view;
     private ReposByUsernameUI uiModel;
 
-    public ReposPresenter(LoadReposInteractor loadReposInteractor, ReposContract.View view) {
+    @Inject
+    public ShowReposPresenter(LoadReposInteractor loadReposInteractor) {
         this.loadReposInteractor = loadReposInteractor;
+    }
+
+    @Override
+    public void attachView(ShowReposContract.View view) {
         this.view = view;
+    }
+
+    @Override
+    public boolean isViewAttached() {
+        return view != null;
     }
 
     @Override
@@ -41,36 +55,48 @@ public class ReposPresenter implements ReposContract.Presenter, ReposCallback {
 
     @Override
     public void onResponse(ReposByUsername response) {
-        uiModel = transformModelToUiModel(response);
-        view.showRepos(uiModel, true /* go to top */);
+        if (isViewAttached()) {
+            uiModel = transformModelToUiModel(response);
+            view.showRepos(uiModel, true /* go to top */);
+        }
     }
 
     @Override
     public void onError(String error) {
-        view.showError(error);
+        if (isViewAttached()) {
+            view.showError(error);
+        }
     }
 
     @Override
     public void goToAddReposScreen() {
-        view.navigateToAddReposScreen();
+        if (isViewAttached()) {
+            view.navigateToAddReposScreen();
+        }
     }
 
     @Override
     public void goToGitHubUsernamePage(String username) {
-        String url = GitHubApiClient.BASE_URL + username;
-        view.browseGitHubUsernamePage(url);
+        if (isViewAttached()) {
+            String url = GitHubApiClient.BASE_URL + username;
+            view.browseGitHubUsernamePage(url);
+        }
     }
 
     @Override
     public void goToGitHubRepoPage(String url) {
-        view.browseGitHubRepoPage(url);
+        if (isViewAttached()) {
+            view.browseGitHubRepoPage(url);
+        }
     }
 
     @Override
     public void restoreStateAndShowRepos(ReposByUsernameUI uiModel) {
-        if (uiModel != null) {
-            this.uiModel = uiModel;
-            view.showRepos(uiModel, false /*not going to top*/);
+        if (isViewAttached()) {
+            if (uiModel != null) {
+                this.uiModel = uiModel;
+                view.showRepos(uiModel, false /*not going to top*/);
+            }
         }
     }
 

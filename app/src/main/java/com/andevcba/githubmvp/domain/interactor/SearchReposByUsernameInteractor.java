@@ -1,23 +1,25 @@
 package com.andevcba.githubmvp.domain.interactor;
 
-import com.andevcba.githubmvp.data.DependencyProvider;
 import com.andevcba.githubmvp.data.ReposCallback;
-import com.andevcba.githubmvp.data.cache.ReposCache;
 import com.andevcba.githubmvp.data.repository.Repository;
 import com.andevcba.githubmvp.data.repository.RepositoryFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Interactor to search for repos by a given username on GitHub API.
  *
  * @author lucas.nobile
  */
+@Singleton
 public class SearchReposByUsernameInteractor extends InteractorAdapter {
 
     private RepositoryFactory factory;
 
-    public SearchReposByUsernameInteractor() {
-        ReposCache reposCache = DependencyProvider.provideReposCache();
-        factory = DependencyProvider.provideRepositoryFactory(reposCache);
+    @Inject
+    public SearchReposByUsernameInteractor(RepositoryFactory factory) {
+        this.factory = factory;
     }
 
     @Override

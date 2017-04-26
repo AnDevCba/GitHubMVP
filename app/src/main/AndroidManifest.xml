@@ -5,20 +5,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".presentation.GitHubMVPApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.show_repos.view.ReposActivity">
+        <activity android:name=".presentation.show_repos.view.ShowReposActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:parentActivityName=".presentation.show_repos.view.ReposActivity"
-            android:name=".presentation.add_repos.AddReposActivity" />
+            android:name=".presentation.add_repos.AddReposActivity"
+            android:parentActivityName=".presentation.show_repos.view.ShowReposActivity" />
+
         <instrumentation
             android:name="android.test.InstrumentationTestRunner"
             android:targetPackage="com.matrix.edc.client.android" />

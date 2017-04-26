@@ -1,28 +1,26 @@
 package com.andevcba.githubmvp.data.cache;
 
-import android.support.annotation.VisibleForTesting;
-
 import com.andevcba.githubmvp.data.model.Repo;
 
 import java.util.List;
 import java.util.TreeMap;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * {@link ReposCache} implementation.
  *
  * @author lucas.nobile
  */
+@Singleton
 public class ReposCacheImpl implements ReposCache {
 
-    /**
-     * This method has reduced visibility for testing
-     * and is only visible to tests in the same package.
-     */
-    @VisibleForTesting
-    TreeMap<String, List<Repo>> cachedRepos; // username, list of repos
+    private TreeMap<String, List<Repo>> cachedRepos; // username, list of repos
 
-    public ReposCacheImpl() {
-        cachedRepos = new TreeMap<>();
+    @Inject
+    public ReposCacheImpl(TreeMap<String, List<Repo>> cachedRepos) {
+        this.cachedRepos = cachedRepos;
     }
 
     @Override
@@ -43,5 +41,10 @@ public class ReposCacheImpl implements ReposCache {
     @Override
     public boolean isCached(String username) {
         return cachedRepos.containsKey(username);
+    }
+
+    @Override
+    public int size() {
+        return cachedRepos.size();
     }
 }

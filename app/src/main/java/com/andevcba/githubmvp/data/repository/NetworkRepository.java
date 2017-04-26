@@ -10,6 +10,9 @@ import com.andevcba.githubmvp.data.net.GitHubApiClient;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -18,12 +21,16 @@ import retrofit2.Response;
  *
  * @author lucas.nobile
  */
+@Singleton
 public class NetworkRepository extends RepositoryAdapter {
 
     private GitHubApiClient gitHubApiClient;
+    private ErrorResponseHelper errorResponseHelper; // TODO Lazy loading
 
-    public NetworkRepository(GitHubApiClient gitHubApiClient) {
+    @Inject
+    public NetworkRepository(GitHubApiClient gitHubApiClient, ErrorResponseHelper errorResponseHelper) {
         this.gitHubApiClient = gitHubApiClient;
+        this.errorResponseHelper = errorResponseHelper;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class NetworkRepository extends RepositoryAdapter {
                     callback.onResponse(repoResponse);
                 } else {
                     // Error such as resource not found
-                    ErrorResponse errorResponse = ErrorResponseHelper.parseError(response);
+                    ErrorResponse errorResponse = errorResponseHelper.parseError(response);
                     callback.onError(errorResponse.getMessage());
                 }
             }

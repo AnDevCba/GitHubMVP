@@ -1,15 +1,16 @@
 package com.andevcba.githubmvp.data.repository;
 
+import com.andevcba.githubmvp.data.ReposCallback;
 import com.andevcba.githubmvp.data.model.ErrorResponse;
 import com.andevcba.githubmvp.data.model.ErrorResponseHelper;
 import com.andevcba.githubmvp.data.model.Repo;
-import com.andevcba.githubmvp.data.net.ApiConstants;
+import com.andevcba.githubmvp.data.model.ReposByUsername;
 import com.andevcba.githubmvp.data.net.GitHubApiClient;
-import com.google.gson.Gson;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -17,19 +18,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit test for {@link NetworkRepository}.
+ * Unit tests for {@link NetworkRepository}.
  *
  * @author lucas.nobile
  */
@@ -42,8 +42,19 @@ public class NetworkRepositoryTest {
     private final Repo REPO2 = new Repo("repo2", "url2");
     private List<Repo> REPO_LIST = new ArrayList<>();
 
+    private List<Repo> EMPTY_REPO_LIST = new ArrayList<>();
+
+    @Mock
+    private ErrorResponseHelper errorResponseHelper;
+
     @Mock
     private GitHubApiClient gitHubApiClient;
+
+    @Mock
+    private ReposCallback reposCallback;
+
+    @InjectMocks
+    private NetworkRepository networkRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -62,46 +73,34 @@ public class NetworkRepositoryTest {
     public void searchReposByUsername_shouldReturnAListOfRepos() throws IOException {
         // Given
         Response stubbedResponse = Response.success(REPO_LIST);
-        when(gitHubApiClient.searchReposByUsername(USERNAME)).thenReturn(Calls.response(stubbedResponse));
+        Call<List<Repo>> stubbedCallResponse = Calls.response(stubbedResponse);
+        when(gitHubApiClient.searchReposByUsername(USERNAME)).thenReturn(stubbedCallResponse);
 
         // When
-        Call<List<Repo>> reposCall = gitHubApiClient.searchReposByUsername(USERNAME);
-        Response<List<Repo>> response = reposCall.execute();
+        networkRepository.searchReposByUsername(USERNAME, reposCallback);
 
         // Then
-        assertTrue(response.isSuccessful());
-        assertEquals(2, response.body().size());
-        assertEquals("repo1", response.body().get(0).getName());
-        assertEquals("url1", response.body().get(0).getUrl());
-        assertEquals("repo2", response.body().get(1).getName());
-        assertEquals("url2", response.body().get(1).getUrl());
+        verify(reposCallback).onResponse(any(ReposByUsername.class));
     }
 
     @Test
     public void searchReposByUsername_not_valid_on_GitHub_shouldReturnNotFoundResponse() throws IOException {
         // Given
-        ErrorResponse stubbedErrorResponse = new ErrorResponse();
-        stubbedErrorResponse.setCode(ApiConstants.NOT_FOUND_CODE);
-        stubbedErrorResponse.setMessage(ApiConstants.NOT_FOUND_MESSAGE);
+        Response stubbedResponse = Response.success(EMPTY_REPO_LIST);
+        Call<List<Repo>> stubbedCallResponse = Calls.response(stubbedResponse);
+        when(gitHubApiClient.searchReposByUsername(NOT_VALID_USERNAME)).thenReturn(stubbedCallResponse);
 
-        Gson gson = new Gson();
-        String jsonStr = gson.toJson(stubbedErrorResponse);
-
-        Response stubbedResponse = Response.error(ApiConstants.NOT_FOUND_CODE, ResponseBody.create(MediaType.parse(ApiConstants.JSON_TYPE), jsonStr));
-        when(gitHubApiClient.searchReposByUsername(NOT_VALID_USERNAME)).thenReturn(Calls.response(stubbedResponse));
+        ErrorResponse mockErrorResponse = mock(ErrorResponse.class);
+        when(errorResponseHelper.parseError(any(Response.class))).thenReturn(mockErrorResponse);
 
         // When
-        Call<List<Repo>> reposCall = gitHubApiClient.searchReposByUsername(NOT_VALID_USERNAME);
-        Response<List<Repo>> response = reposCall.execute();
-        ErrorResponse errorResponse = ErrorResponseHelper.parseError(response);
+        networkRepository.searchReposByUsername(NOT_VALID_USERNAME, reposCallback);
 
         // Then
-        assertFalse(response.isSuccessful());
-        assertEquals(404, errorResponse.getCode());
-        assertEquals("Not Found", errorResponse.getMessage());
+        verify(reposCallback).onError(anyString());
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void searchReposByUsername_timeout_shouldReturnFailureResponse() throws IOException {
         // Given
         IOException exception = new IOException("Timeout!");
@@ -109,10 +108,9 @@ public class NetworkRepositoryTest {
         when(gitHubApiClient.searchReposByUsername(USERNAME)).thenReturn(stubbedResponse);
 
         // When
-        Call<List<Repo>> reposCall = gitHubApiClient.searchReposByUsername(USERNAME);
-        Response<List<Repo>> response = reposCall.execute();
+        networkRepository.searchReposByUsername(USERNAME, reposCallback);
 
         // Then
-        assertFalse(response.isSuccessful());
+        verify(reposCallback).onError(anyString());
     }
 }

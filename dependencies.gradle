@@ -20,6 +20,8 @@ ext {
     retrofitVersion = '2.1.0'
     stickyHeadersVersion = '0.3.3'
     circleImageVersion = '2.1.0';
+    daggerVersion = '2.10'
+    javaxAnnotationVersion = '1.0'
 
     // Unit Testing dependencies
     junitVersion = '4.12'

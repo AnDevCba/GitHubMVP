@@ -2,11 +2,13 @@ package com.andevcba.githubmvp.data.model;
 
 import android.util.Log;
 
+import com.andevcba.githubmvp.data.net.ApiConstants;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import com.andevcba.githubmvp.data.DependencyProvider;
-import com.andevcba.githubmvp.data.net.ApiConstants;
+import javax.inject.Inject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -20,10 +22,14 @@ import retrofit2.Retrofit;
 public class ErrorResponseHelper {
 
     private static final String TAG = "ErrorResponseHelper";
+    private Retrofit retrofit;
 
-    public static ErrorResponse parseError(Response<?> response) {
-        Retrofit retrofit = DependencyProvider.provideRetrofit();
+    @Inject
+    public ErrorResponseHelper(Retrofit retrofit) {
+        this.retrofit = retrofit;
+    }
 
+    public ErrorResponse parseError(Response<?> response) {
         Converter<ResponseBody, ErrorResponse> converter =
                 retrofit.responseBodyConverter(ErrorResponse.class, new Annotation[0]);
 

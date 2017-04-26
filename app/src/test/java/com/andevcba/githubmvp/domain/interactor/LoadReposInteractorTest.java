@@ -41,5 +41,4 @@ public class LoadReposInteractorTest {
         // Then
         verify(repository).loadAllRepos(reposCallback);
     }
-
 }
