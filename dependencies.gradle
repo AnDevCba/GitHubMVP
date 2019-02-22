@@ -19,8 +19,8 @@ ext {
     supportLibraryVersion = '24.2.1'
     retrofitVersion = '2.1.0'
     stickyHeadersVersion = '0.3.3'
-    circleImageVersion = '2.1.0';
-    daggerVersion = '2.10'
+    circleImageVersion = '2.2.0'
+    daggerVersion = '2.21'
     javaxAnnotationVersion = '1.0'
 
     // Unit Testing dependencies
