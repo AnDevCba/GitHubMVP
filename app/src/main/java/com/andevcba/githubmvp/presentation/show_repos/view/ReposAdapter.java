@@ -1,13 +1,14 @@
 package com.andevcba.githubmvp.presentation.show_repos.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.andevcba.githubmvp.R;
 import com.andevcba.githubmvp.presentation.show_repos.model.RepoUI;
@@ -71,6 +72,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
             ViewType item = items.get(position);
             ((ViewHolder) holder).tvName.setText(item.getName());
+            ((ViewHolder) holder).setPosition(position);
             if (REPO_ITEM == item.getType()) {
                 setAnimation(holder.itemView);
             }
@@ -117,6 +119,7 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private int position = 0;
         private TextView tvName;
         private CircleImageView imageView;
         private ShowReposFragment.OnItemSelectedListener itemSelectedListener;
@@ -140,11 +143,6 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            // Use viewHolder#getAdapterPosition() because recyclerView#getAdapterPosition() returns -1 in some cases
-            int position = this.getAdapterPosition();
-            if (position == -1) {
-                position = 0;
-            }
             ViewType item = items.get(position);
             if (ViewType.STICKY_HEADER == item.getType()) {
                 StickyHeaderUI stickyHeaderUI = (StickyHeaderUI) item;
@@ -154,9 +152,13 @@ public class ReposAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 itemSelectedListener.onRepoSelected(repo);
             }
         }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
     }
 
-    class EmptyViewHolder extends RecyclerView.ViewHolder {
+    static class EmptyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvEmtpy;
 

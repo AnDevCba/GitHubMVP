@@ -6,13 +6,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -26,6 +19,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.andevcba.githubmvp.R;
 import com.andevcba.githubmvp.presentation.GitHubMVPApplication;
 import com.andevcba.githubmvp.presentation.di.PresentationComponent;
@@ -37,6 +36,8 @@ import com.andevcba.githubmvp.presentation.show_repos.view.ShowReposFragment;
 import com.andevcba.githubmvp.presentation.show_repos.view.ViewType;
 import com.andevcba.githubmvp.presentation.views.custom.ImageDialog;
 import com.brandongogetap.stickyheaders.StickyLayoutManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;

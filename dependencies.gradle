@@ -10,16 +10,16 @@ allprojects {
 
 ext {
     // SDK and build tools
-    compileSdkVersion = 23
+    compileSdkVersion = 28
     minSdkVersion = 21
-    targetSdkVersion = 23
-    buildToolsVersion = '23.0.3'
+    targetSdkVersion = 28
+    buildToolsVersion = '28.0.3'
 
     // App dependencies
-    supportLibraryVersion = '24.2.1'
+    supportLibraryVersion = '28.0.0'
     retrofitVersion = '2.1.0'
-    stickyHeadersVersion = '0.3.3'
-    circleImageVersion = '2.2.0'
+    stickyHeadersVersion = '0.5.1'
+    circleImageVersion = '3.1.0'
     daggerVersion = '2.21'
     javaxAnnotationVersion = '1.0'
 

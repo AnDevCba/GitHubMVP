@@ -20,9 +20,5 @@
         <activity
             android:name=".presentation.add_repos.AddReposActivity"
             android:parentActivityName=".presentation.show_repos.view.ShowReposActivity" />
-
-        <instrumentation
-            android:name="android.test.InstrumentationTestRunner"
-            android:targetPackage="com.matrix.edc.client.android" />
     </application>
 </manifest>
